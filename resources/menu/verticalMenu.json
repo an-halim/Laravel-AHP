@@ -1,0 +1,66 @@
+{
+    "menu": [
+        {
+            "url": "/",
+            "name": "Dashboards",
+            "icon": "menu-icon tf-icons bx bx-home-circle",
+            "slug": "dashboard",
+            "submenu": [
+                {
+                    "url": "/dashboard",
+                    "name": "Analytics",
+                    "slug": "dashboard-analytics"
+                }
+            ]
+        },
+        {
+            "name": "Data Master",
+            "icon": "menu-icon tf-icons bx bx-layout",
+            "slug": "data-master",
+            "submenu": [
+                {
+                    "url": "data-master/user",
+                    "name": "User",
+                    "slug": "data-master-user"
+                },
+                {
+                    "url": "data-master/alternatif",
+                    "name": "Data Alternatif",
+                    "slug": "data-master-alternatif"
+                },
+                {
+                    "url": "data-master/criteria",
+                    "name": "Criteria",
+                    "slug": "data-master-criteria"
+                },
+                {
+                    "url": "data-master/sub-criteria",
+                    "name": "Sub Criteria",
+                    "slug": "data-master-sub-criteria"
+                }
+            ]
+        },
+        {
+            "name": "AHP",
+            "icon": "menu-icon tf-icons bx bx-layout",
+            "slug": "ahp",
+            "submenu": [
+                {
+                    "url": "data-master/alternatif",
+                    "name": "Data Alternatif",
+                    "slug": "data-master-alternatif"
+                },
+                {
+                    "url": "layouts/without-navbar",
+                    "name": "Bobot Criteria",
+                    "slug": "layouts-without-navbar"
+                },
+                {
+                    "url": "layouts/container",
+                    "name": "Laporan Perhitungan",
+                    "slug": "layouts-container"
+                }
+            ]
+        }
+    ]
+}
