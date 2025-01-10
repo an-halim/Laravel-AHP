@@ -55,6 +55,7 @@ Route::middleware('role:Admin')->group(function () {
     Route::delete('/data-master/user/{id}', [UserController::class, 'delete'])->name('delete-user');
 
     Route::get('/data-master/alternatif', [RiceCookerController::class, 'index'])->name('data-master-alternatif');
+    Route::post('/data-master/alternatif', [RiceCookerController::class, 'create'])->name('data-master-alternatif');
 
     Route::get('/data-master/criteria', [CriteriaController::class, 'index'])->name('data-master-criteria');
     Route::post('/data-master/criteria', [CriteriaController::class, 'create'])->name('data-master-criteria');

@@ -47,37 +47,59 @@
 <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="{{ route('create-user') }}" method="post">
-         @csrf
+        <form action="{{ route('data-master-alternatif') }}" method="post" enctype="multipart/form-data">
+            @csrf
             <div class="modal-header">
-            <h5 class="modal-title" id="modalCenterTitle">Tambah User</h5>
+            <h5 class="modal-title" id="modalCenterTitle">Tambah Rice Cooker</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <div class="row">
                 <div class="col mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="xxxx@xxx.xx">
+                <label for="nama" class="form-label">Nama</label>
+                <input type="nama" id="nama" name="nama" class="form-control" placeholder="Enter Name">
                 </div>
             </div>
             <div class="row g-2">
                 <div class="col mb-0">
-                <label for="password" class="form-label">Password</label>
-                <input type="text" id="password" name="password" class="form-control" placeholder="Enter Password">
+                <label for="model" class="form-label">Model</label>
+                <input type="text" id="model" name="model" class="form-control" placeholder="Enter model">
                 </div>
                 <div class="col mb-0">
-                <label for="role" class="form-label">Role</label>
-                    <select class="form-select" id="role" name="role">
-                        <option selected>Select Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Customer">User</option>
-                    </select>
+                <label for="garansi" class="form-label">Garansi</label>
+                <input type="text" id="garansi" name="garansi" class="form-control" placeholder="Enter garansi">
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col mb-0">
+                <label for="harga" class="form-label">Harga</label>
+                <input type="text" id="harga" name="harga" class="form-control" placeholder="Enter harga">
+                </div>
+                <div class="col mb-0">
+                <label for="watt" class="form-label">Watt</label>
+                <input type="text" id="watt" name="watt" class="form-control" placeholder="Enter watt">
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col mb-0">
+                <label for="kapasitas" class="form-label">Kapasitas</label>
+                <input type="text" id="kapasitas" name="kapasitas" class="form-control" placeholder="Enter kapasitas">
+                </div>
+                <div class="col mb-0">
+                <label for="dayatahan" class="form-label">Daya Tahan</label>
+                <input type="text" id="dayatahan" name="dayatahan" class="form-control" placeholder="Enter Daya Tahan">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter your description here"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                <label for="gambar">Upload Image</label>
+                <input type="file" class="form-control-file" id="gambar" name="gambar" accept="image/*">
                 </div>
             </div>
             </div>

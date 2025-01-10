@@ -16,55 +16,55 @@ class SubCriteriaSeeder extends Seeder
     {
         SubCriteria::create([
             'code' => 'KS001',
-            'name' => 'Lantai',
+            'name' => 'DAYA TAHAN',
             'nilaik' => '1',
             'nilaib' => '1',
         ]);
         SubCriteria::create([
             'code' => 'KS002',
-            'name' => 'Lantai',
+            'name' => 'DAYA TAHAN',
             'nilaik' => '2',
             'nilaib' => '2',
         ]);
         SubCriteria::create([
             'code' => 'KS003',
-            'name' => 'Lantai',
+            'name' => 'DAYA TAHAN',
             'nilaik' => '3',
             'nilaib' => '3',
         ]);
         SubCriteria::create([
             'code' => 'KS004',
-            'name' => 'Kamar',
+            'name' => 'GARANSI',
             'nilaik' => '1',
             'nilaib' => '1',
         ]);
         SubCriteria::create([
             'code' => 'KS005',
-            'name' => 'Kamar',
+            'name' => 'GARANSI',
             'nilaik' => '2',
             'nilaib' => '2',
         ]);
         SubCriteria::create([
             'code' => 'KS006',
-            'name' => 'Kamar',
+            'name' => 'GARANSI',
             'nilaik' => '3',
             'nilaib' => '3',
         ]);
         SubCriteria::create([
             'code' => 'KS007',
-            'name' => 'Luas',
+            'name' => 'WATT',
             'nilaik' => '150',
             'nilaib' => '1',
         ]);
         SubCriteria::create([
             'code' => 'KS008',
-            'name' => 'Luas',
+            'name' => 'WATT',
             'nilaik' => '200',
             'nilaib' => '2',
         ]);
         SubCriteria::create([
             'code' => 'KS009',
-            'name' => 'Luas',
+            'name' => 'WATT',
             'nilaik' => '300',
             'nilaib' => '3',
         ]);

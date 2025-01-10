@@ -46,5 +46,27 @@ class AlternativeSeeder extends Seeder
             'keterangan' => 'Rice cooker dengan fitur multifungsi dan daya tahan lama.',
             'gambar' => 'rice_cooker_toshiba.jpg',
         ]);
+
+        Alternative::create([
+            'model' => 'RC-04',
+            'nama' => 'Rice Cooker Toshiba',
+            'harga' => 750000,
+            'watt' => 600,
+            'kapasitas' => 2.0,
+            'dayatahan' => 6,
+            'keterangan' => 'Rice cooker dengan fitur multifungsi dan daya tahan lama.',
+            'gambar' => 'rice_cooker_toshiba.jpg',
+        ]);
+
+        Alternative::create([
+            'model' => 'RC-05',
+            'nama' => 'Rice Cooker Toshiba',
+            'harga' => 800000,
+            'watt' => 500,
+            'kapasitas' => 2.0,
+            'dayatahan' => 6,
+            'keterangan' => 'Rice cooker dengan fitur multifungsi dan daya tahan lama.',
+            'gambar' => 'rice_cooker_toshiba.jpg',
+        ]);
     }
 }
