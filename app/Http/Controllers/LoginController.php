@@ -12,6 +12,10 @@ class LoginController extends Controller
 {
     public function login()
     {
+        // check if user is already logged in
+        if (Auth::check()) {
+            return redirect('/dashboard');
+        }
         return view('content.authentications.auth-login-basic');
     }
 
@@ -20,7 +24,7 @@ class LoginController extends Controller
         return view('content.authentications.auth-register-basic');
     }
 
-    public function postregister(Request $request)
+    public function doRegister(Request $request)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -46,29 +50,18 @@ class LoginController extends Controller
         }
     }
 
-    public function postlogin(Request $request)
+    public function doLogin(Request $request)
     {
-        // dd($request->all());
         if (Auth::attempt($request->only('email', 'password'))) {
-            if (auth()->user()->role == 'Admin') {
-                return redirect('/admin');
-            } elseif (auth()->user()->role == 'Customer') {
-                return redirect('/home');
-            } else {
-                return redirect('login');
-            }
+            return redirect('/dashboard');
         } else {
-            echo '<script language="javascript">';
-            echo 'alert("Data User tidak ditemukan")';
-            echo '</script>';
-            return redirect('/login');
+            return redirect()->back()->with('error', 'Email atau Password Salah');
         }
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-        DB::table('hasils')->delete();
         return redirect('login');
     }
 }

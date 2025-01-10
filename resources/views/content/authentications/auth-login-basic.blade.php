@@ -7,7 +7,47 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/page-auth.css')}}">
 @endsection
 
+@section('page-script')
+<script src="{{asset('assets/js/ui-toasts.js')}}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Find the toast element
+        const toastElement = document.querySelector('.toast');
+
+        if (toastElement) {
+            // Initialize and show the toast
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        }
+    });
+</script>
+@endsection
+
+
+@if(session('success'))
+    <div class="toast toast-placement-ex m-2 bg-success bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ session('error') }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="toast toast-placement-ex m-2 text-bg-danger bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ session('error') }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+@endif
+
 @section('content')
+
 <div class="container-xxl">
   <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
@@ -18,14 +58,14 @@
           <div class="app-brand justify-content-center">
             <a href="{{url('/')}}" class="app-brand-link gap-2">
               <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span>
-              <span class="app-brand-text demo text-body fw-bold">{{config('variables.templateName')}}</span>
+              <span class="app-brand-text demo text-body fw-bold">{{config('app.name')}}</span>
             </a>
           </div>
           <!-- /Logo -->
-          <h4 class="mb-2">Welcome to {{config('variables.templateName')}}! 👋</h4>
+          <h4 class="mb-2">Welcome to {{config('app.name')}}! 👋</h4>
           <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-          <form id="formAuthentication" class="mb-3" action="{{ route('postlogin') }}" method="post">
+          <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="post">
             @csrf
             <div class="mb-3">
               <label for="email" class="form-label">Email or Username</label>

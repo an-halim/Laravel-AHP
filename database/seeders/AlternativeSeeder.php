@@ -15,40 +15,36 @@ class AlternativeSeeder extends Seeder
     public function run()
     {
         Alternative::create([
-            'tipe' => 'R002',
-            'lantai' => 'Jl. Kebon Raya No. 01',
-            'kamar' => 'Perumahan',
-            'luas' => '1100',
-            'harga' => '120000000',
-            'garasi' => 'Lengkap',
-            'keterangan' => 'Lain-lain',
-            'gambar' => 'yy.jpg',
-            'gambar_denah' => 'yy.jpg',
+            'model' => 'RC-01',
+            'nama' => 'Rice Cooker Panasonic',
+            'harga' => 500000,
+            'watt' => 500,
+            'kapasitas' => 1.8, // dalam liter
+            'dayatahan' => 5, // daya tahan dalam tahun
+            'keterangan' => 'Rice cooker berkualitas tinggi dengan teknologi pemasakan cepat.',
+            'gambar' => 'rice_cooker_panasonic.jpg', // Anda bisa menyesuaikan path gambar sesuai dengan struktur direktori Anda
         ]);
 
         Alternative::create([
-            'tipe' => 'R003',
-            'lantai' => 'Jl. Kebon Raya No. 01',
-            'kamar' => 'Perumahan',
-            'luas' => '7000',
-            'harga' => '150000000',
-            'garasi' => 'Lengkap',
-            'keterangan' => 'Lain-lain',
-            'gambar' => 'yy.jpg',
-            'gambar_denah' => 'yy.jpg',
+            'model' => 'RC-02',
+            'nama' => 'Rice Cooker Sharp',
+            'harga' => 450000,
+            'watt' => 400,
+            'kapasitas' => 1.5,
+            'dayatahan' => 4,
+            'keterangan' => 'Rice cooker hemat energi dan mudah digunakan.',
+            'gambar' => 'rice_cooker_sharp.jpg',
         ]);
 
-
         Alternative::create([
-            'tipe' => 'R005',
-            'lantai' => 'Jl. Kebon Raya No. 01',
-            'kamar' => 'Perumahan',
-            'luas' => '1020',
-            'harga' => '200000000',
-            'garasi' => 'Lengkap',
-            'keterangan' => 'Lain-lain',
-            'gambar' => 'yy.jpg',
-            'gambar_denah' => 'yy.jpg',
+            'model' => 'RC-03',
+            'nama' => 'Rice Cooker Toshiba',
+            'harga' => 700000,
+            'watt' => 600,
+            'kapasitas' => 2.0,
+            'dayatahan' => 6,
+            'keterangan' => 'Rice cooker dengan fitur multifungsi dan daya tahan lama.',
+            'gambar' => 'rice_cooker_toshiba.jpg',
         ]);
     }
 }

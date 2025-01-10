@@ -164,6 +164,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th>#</th>
           <th>Name</th>
           <th>Email</th>
           <th>Role</th>
@@ -172,10 +173,11 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        <?php $no = 1; ?>
+        <?php $no = ($users->currentPage() - 1) * $users->perPage() + 1; ?>
         @if($users->count() > 0)
         @foreach($users as $user)
         <tr>
+            <th scope="row">{{ $no++ }}</th>
             <td><i class="bx bxl-angular bx-sm text-danger me-3"></i> <span class="fw-medium">{{ $user->name }}</span></td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->role }}</td>
@@ -206,6 +208,9 @@
         @endif
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+        {!! $users->links('pagination::bootstrap-4') !!}
+    </div>
   </div>
 </div>
 <!--/ Basic Bootstrap Table -->

@@ -8,6 +8,8 @@ use App\Models\Alternative;
 use App\Models\Comparisons;
 use App\Models\Hasil;
 use App\Models\SubCriteria;
+use App\Models\UserResult;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AhpController extends Controller
@@ -15,8 +17,7 @@ class AhpController extends Controller
 
     public function indexbobot()
     {
-        DB::table('hasils')->delete();
-        return view('admin/package/ahp/bobot');
+        return view('content.bobot.bobot');
     }
 
     public function indexperhitungan()
@@ -33,9 +34,10 @@ class AhpController extends Controller
     {
         $data_rumah = Alternative::get();
         $data_crt = SubCriteria::select('name')->distinct()->get();
-        return view('admin/package/alternative/index', [
+        return view('content.ahp-alternatif.ahp-alternatif', [
             'data_rumah' => $data_rumah,
-            'data_crt' => $data_crt
+            'data_crt' => $data_crt,
+            'alternatifs' => $data_rumah,
         ]);
     }
 
@@ -100,7 +102,7 @@ class AhpController extends Controller
         (float) $k29 = $k4 + $k9 + $k14 + $k19 + $k24;
         (float) $k30 = $k5 + $k10 + $k15 + $k20 + $k25;
 
-        return view('admin/package/ahp/index', [
+        return view('content.matrix1.matrix1', [
             'k1' => $k1,
             'k2' => $k2,
             'k3' => $k3,
@@ -199,7 +201,7 @@ class AhpController extends Controller
         $k29 = $k4 + $k9 + $k14 + $k19 + $k24;
         $k30 = $k5 + $k10 + $k15 + $k20 + $k25;
 
-        return view('admin/package/ahp/index2', [
+        return view('content.matrix2.matrix2', [
             'k1' => $k1,
             'k2' => $k2,
             'k3' => $k3,
@@ -319,7 +321,7 @@ class AhpController extends Controller
         // // Menghitung CR
         // $cr = $ci/5;
 
-        return view('admin/package/ahp/index3', [
+        return view('content.matrix3.matrix3', [
             'k1' => $k1,
             'k2' => $k2,
             'k3' => $k3,
@@ -444,7 +446,7 @@ class AhpController extends Controller
         // Menghitung CR
         $cr = $ci / 5;
 
-        return view('admin/package/ahp/index4', [
+        return view('content.consictensy.consictensy', [
             'k1' => $k1,
             'k2' => $k2,
             'k3' => $k3,
@@ -489,10 +491,10 @@ class AhpController extends Controller
     public function posthasilrekomendasi(Request $request)
     {
         // Select data dulu
-        $harga = Comparisons::select('harga')->orderBY('tipe', 'asc')->get();
-        $lantai = Comparisons::select('watt')->orderBY('tipe', 'asc')->get();
-        $luas = Comparisons::select('dayatahan')->orderBY('tipe', 'asc')->get();
-        $kamar = Comparisons::select('kapasitas')->orderBY('tipe', 'asc')->get();
+        $harga = Comparisons::select('harga')->orderBY('model', 'asc')->get();
+        $lantai = Comparisons::select('watt')->orderBY('model', 'asc')->get();
+        $luas = Comparisons::select('dayatahan')->orderBY('model', 'asc')->get();
+        $kamar = Comparisons::select('kapasitas')->orderBY('model', 'asc')->get();
 
         // variabel penampung nilai kedalam array
         $datahargaarr = [];
@@ -506,21 +508,19 @@ class AhpController extends Controller
         }
 
         foreach ($lantai as $iteml) {
-            $datalantaiarr[] = $iteml->lantai;
+            $datalantaiarr[] = $iteml->watt;
         }
 
         foreach ($luas as $items) {
-            $dataluasarr[] = $items->luas;
+            $dataluasarr[] = $items->dayatahan;
         }
 
         foreach ($kamar as $itemk) {
-            $datakamararr[] = $itemk->kamar;
+            $datakamararr[] = $itemk->kapasitas;
         }
 
 
         // buat manggil data arraynya
-        // dd($datahargaarr, $datalantaiarr, $dataluasarr, $datakamararr, $datagarasiarr);
-
         $t31 = $request->k31;
         $t32 = $request->k32;
         $t33 = $request->k33;
@@ -904,17 +904,28 @@ class AhpController extends Controller
             ->select('gambar')
             ->get();
 
+        $nama = DB::table('alternatives')
+            ->select('nama')
+            ->get();
+
 
         for ($i = 0; $i < sizeof($datahargaarr); $i++) {
             $hasiljumlah[] = $hasilppmh[$i] + $hasilppml[$i] + $hasilppmk[$i] + $hasilppms[$i];
         }
 
+
+        $userResult = UserResult::create([
+            'user_id' => Auth::user()->id,
+        ]);
+
         for ($i = 0; $i < sizeof($datahargaarr); $i++) {
             Hasil::create([
-                'model' => $tipe[$i]->tipe,
-                'dayatahan' => $lantait[$i]->lantai,
-                'watt' => $kamart[$i]->kamar,
-                'kapasitas' => $luast[$i]->luas,
+                'user_result_id' => $userResult->id,
+                'model' => $tipe[$i]->model,
+                'nama' => $nama[$i]->nama,
+                'dayatahan' => $lantait[$i]->dayatahan,
+                'watt' => $kamart[$i]->watt,
+                'kapasitas' => $luast[$i]->kapasitas,
                 'harga' => $hargat[$i]->harga,
                 'gambar' => $gambart[$i]->gambar,
                 'ahp' => $hasiljumlah[$i]
@@ -931,10 +942,7 @@ class AhpController extends Controller
             ->limit(1)
             ->get();
 
-        return view('admin/package/ahp/hasil', [
-            'data_hasil' => $datahasil,
-            'data_max' => $datamax
-        ]);
+        return redirect('/ahp/report/' . $userResult->id);
     }
 
 

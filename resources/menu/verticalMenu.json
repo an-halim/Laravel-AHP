@@ -5,11 +5,13 @@
             "name": "Dashboards",
             "icon": "menu-icon tf-icons bx bx-home-circle",
             "slug": "dashboard",
+            "permisson": "Admin,user,Customer",
             "submenu": [
                 {
                     "url": "/dashboard",
                     "name": "Analytics",
-                    "slug": "dashboard-analytics"
+                    "slug": "dashboard-analytics",
+                    "permisson": "Admin,user,Customer"
                 }
             ]
         },
@@ -17,26 +19,37 @@
             "name": "Data Master",
             "icon": "menu-icon tf-icons bx bx-layout",
             "slug": "data-master",
+            "permisson": "Admin",
             "submenu": [
                 {
                     "url": "data-master/user",
                     "name": "User",
-                    "slug": "data-master-user"
+                    "slug": "data-master-user",
+                    "permisson": "Admin"
                 },
                 {
                     "url": "data-master/alternatif",
                     "name": "Data Alternatif",
-                    "slug": "data-master-alternatif"
+                    "slug": "data-master-alternatif",
+                    "permisson": "Admin"
+                },
+                {
+                    "url": "data-master/rating",
+                    "name": "Rating",
+                    "slug": "data-master-rating",
+                    "permisson": "Admin"
                 },
                 {
                     "url": "data-master/criteria",
                     "name": "Criteria",
-                    "slug": "data-master-criteria"
+                    "slug": "data-master-criteria",
+                    "permisson": "Admin"
                 },
                 {
                     "url": "data-master/sub-criteria",
                     "name": "Sub Criteria",
-                    "slug": "data-master-sub-criteria"
+                    "slug": "data-master-sub-criteria",
+                    "permisson": "Admin"
                 }
             ]
         },
@@ -44,21 +57,25 @@
             "name": "AHP",
             "icon": "menu-icon tf-icons bx bx-layout",
             "slug": "ahp",
+            "permisson": "Admin,user,Customer",
             "submenu": [
                 {
-                    "url": "data-master/alternatif",
+                    "url": "ahp/alternatif",
                     "name": "Data Alternatif",
-                    "slug": "data-master-alternatif"
+                    "slug": "ahp-alternatif",
+                    "permisson": "Admin,user,Customer"
                 },
                 {
-                    "url": "layouts/without-navbar",
+                    "url": "/ahp/bobot",
                     "name": "Bobot Criteria",
-                    "slug": "layouts-without-navbar"
+                    "slug": "ahp-bobot",
+                    "permisson": "Admin,user,Customer"
                 },
                 {
-                    "url": "layouts/container",
+                    "url": "ahp/report",
                     "name": "Laporan Perhitungan",
-                    "slug": "layouts-container"
+                    "slug": "ahp-reports",
+                    "permisson": "Admin,user,Customer"
                 }
             ]
         }

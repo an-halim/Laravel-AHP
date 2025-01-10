@@ -7,7 +7,7 @@
             <h3 class="page-title">Kesimpulan</h3>
             @foreach($data_rumah as $DR)
             <button type="button" class="btn btn-info btn-toastr">
-                <a href="/ahp/bobot/kesimpulan/cetak/{{ $DR->tipe }}" target="_blank" style="color:white;">Cetak</a>
+                <a href="/ahp/bobot/kesimpulan/cetak/{{ $DR->model }}" target="_blank" style="color:white;">Cetak</a>
             </button>
             <button type="button" class="btn btn-danger btn-toastr">
                 <a href="/ahp/bobot" style="color:white;">Hitung Ulang</a>
@@ -22,7 +22,7 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Tipe Rumah : {{ $DR->tipe }}</th>
+                                    <th class="text-center">Tipe Rumah : {{ $DR->model }}</th>
                                 </tr>
                             </thead>
                             <tbody>

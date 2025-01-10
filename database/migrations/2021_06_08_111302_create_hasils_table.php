@@ -15,7 +15,7 @@ class CreateHasilsTable extends Migration
     {
         Schema::create('hasils', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('model')->unique();
+            $table->string('model');
             $table->string('nama');
             $table->string('harga');
             $table->string('watt');

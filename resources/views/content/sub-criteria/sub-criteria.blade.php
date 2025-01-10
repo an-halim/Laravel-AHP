@@ -51,34 +51,44 @@
         <form action="{{ route('create-user') }}" method="post">
          @csrf
             <div class="modal-header">
-            <h5 class="modal-title" id="modalCenterTitle">Tambah User</h5>
+            <h5 class="modal-title" id="modalCenterTitle">Tambah Sub Criteria</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <div class="row">
                 <div class="col mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
+                <label for="code" class="form-label">Code</label>
+                <input type="text" id="code" name="code" class="form-control" placeholder="Enter Code">
                 </div>
             </div>
             <div class="row">
                 <div class="col mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="xxxx@xxx.xx">
+                <label for="cbname" class="form-label">Criteria Name</label>
+                <select class="form-control" name="cbname">
+                    @if($criterias->count() > 0)
+                    @foreach($criterias as $criteria)
+                    <option value="{{ $criteria->name }}">{{ $criteria->name }}</option>
+                    @endforeach
+                    @else
+                    <option value="none" disabled>Data kriteria tidak tersedia</option>
+                    @endif
+                </select>
                 </div>
             </div>
-            <div class="row g-2">
-                <div class="col mb-0">
-                <label for="password" class="form-label">Password</label>
-                <input type="text" id="password" name="password" class="form-control" placeholder="Enter Password">
+            <div class="row">
+                <div class="col mb-3">
+                <label for="nilaik" class="form-label">Criteria Value</label>
+                <input type="text" id="nilaik" name="nilaik" class="form-control" placeholder="Enter Value">
                 </div>
-                <div class="col mb-0">
-                <label for="role" class="form-label">Role</label>
-                    <select class="form-select" id="role" name="role">
-                        <option selected>Select Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Customer">User</option>
-                    </select>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                <label for="role" class="form-label">Nilai Bobot Criteria</label>
+                <select class="form-select" id="role" name="cbnilaib">
+                    <option value="1">Rendah (Nilai = 1)</option>
+                    <option value="2">Rata-Rata (Nilai = 2)</option>
+                    <option value="3">Tinggi (Nilai = 3)</option>
+                </select>
                 </div>
             </div>
             </div>
@@ -162,54 +172,56 @@
         Sub Criteria
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">+ Tambah Sub Criteria</button>
     </h5>
-  <div class="table-responsive text-nowrap">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>ID Sub Criteria</th>
-          <th>Nama Criteria</th>
-          <th>Nilai Criteria</th>
-          <th>Bobot Criteria</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody class="table-border-bottom-0">
-        <?php $no = 1; ?>
-        @if($subCriterias->count() > 0)
-        @foreach($subCriterias as $criteria)
-        <tr>
-            <th scope="row">
-                <?php
-                echo $no++;
-                ?></th>
-            <td>{{ $criteria->code }}</td>
-            <td>{{ $criteria->name }}</td>
-            <td>{{ $criteria->nilaik }}</td>
-            <td>{{ $criteria->nilaib }}</td>
-            <td>
-                <div class="dropdown">
-                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal" >
-                        <i class="bx bx-edit-alt me-1"></i> Edit
-                    </a>
-                    <a class="dropdown-item" href="javascript:void(0)">
-                        <i class="bx bx-trash me-1"></i> Delete
-                    </a>
-                </div>
-                </div>
-            </td>
-        </tr>
-        @endforeach
-        @else
-        <tr>
-            <td colspan="6">Data tidak tersedia</td>
-        </tr>
-        @endif
-      </tbody>
-    </table>
-  </div>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ID Sub Criteria</th>
+                    <th>Nama Criteria</th>
+                    <th>Nilai Criteria</th>
+                    <th>Bobot Criteria</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                <?php $no = ($subCriterias->currentPage() - 1) * $subCriterias->perPage() + 1; ?>
+                @if($subCriterias->count() > 0)
+                    @foreach($subCriterias as $criteria)
+                        <tr>
+                            <th scope="row">{{ $no++ }}</th>
+                            <td>{{ $criteria->code }}</td>
+                            <td>{{ $criteria->name }}</td>
+                            <td>{{ $criteria->nilaik }}</td>
+                            <td>{{ $criteria->nilaib }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal">
+                                            <i class="bx bx-edit-alt me-1"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0)">
+                                            <i class="bx bx-trash me-1"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6" class="text-center">Data tidak tersedia</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            {!! $subCriterias->links('pagination::bootstrap-4') !!}
+        </div>
+    </div>
 </div>
+
+
 <!--/ Basic Bootstrap Table -->
 @endsection

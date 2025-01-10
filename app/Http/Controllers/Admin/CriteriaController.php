@@ -47,6 +47,41 @@ class CriteriaController extends Controller
             'name' => $request->name
         ]);
         return redirect('/admin/kriteria');
-        // dd($request->all());
+    }
+
+
+    public function create(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'code' => 'required',
+        ]);
+
+        try {
+            Criteria::create([
+                'name' => $request->name,
+                'code' => $request->code
+            ]);
+
+            // Flash success message
+            return redirect()->back()->with('success', 'Criteria created successfully.');
+        } catch (\Exception $e) {
+            // Log the error and flash failure message
+            \Log::error("Criteria creation failed: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create criteria. Please try again.');
+        }
+    }
+
+    public function delete($id)
+    {
+        // menghapus data criteria berdasarkan id yang dipilih
+        try {
+            Criteria::destroy($id);
+            return redirect()->back()->with('success', 'Criteria deleted successfully');
+        } catch (\Exception $e) {
+            // Log the error and flash failure message
+            \Log::error("Criteria deletion failed: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to delete criteria. Please try again.');
+        }
     }
 }

@@ -5,16 +5,15 @@
 @section('page-script')
 <script src="{{asset('assets/js/ui-modals.js')}}"></script>
 <script>
-    function openEditModal(userId, userName, userEmail, userRole) {
-        document.getElementById('userId').value = userId;
-        document.getElementById('userName').value = userName;
-        document.getElementById('userEmail').value = userEmail;
-        document.getElementById('userRole').value = userRole;
+    function openEditModal(id, name, code) {
+        document.getElementById('id').value = id;
+        document.getElementById('name').value = name;
+        document.getElementById('code').value = code;
     }
-    function openDeleteModal(userId) {
+    function openDeleteModal(id) {
         // Set the action URL for the form to delete the specific user
         const form = document.getElementById('deleteForm');
-        form.action = '/data-master/user/' + userId;
+        form.action = '/data-master/criteria/' + id;
 
         // Show the modal
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -47,10 +46,10 @@
 <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="{{ route('create-user') }}" method="post">
+        <form action="{{ route('data-master-criteria') }}" method="post">
          @csrf
             <div class="modal-header">
-            <h5 class="modal-title" id="modalCenterTitle">Tambah User</h5>
+            <h5 class="modal-title" id="modalCenterTitle">Tambah Criteria</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -62,22 +61,8 @@
             </div>
             <div class="row">
                 <div class="col mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="xxxx@xxx.xx">
-                </div>
-            </div>
-            <div class="row g-2">
-                <div class="col mb-0">
-                <label for="password" class="form-label">Password</label>
-                <input type="text" id="password" name="password" class="form-control" placeholder="Enter Password">
-                </div>
-                <div class="col mb-0">
-                <label for="role" class="form-label">Role</label>
-                    <select class="form-select" id="role" name="role">
-                        <option selected>Select Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Customer">User</option>
-                    </select>
+                <label for="email" class="form-label">Code Criteria</label>
+                <input type="text" id="code" name="code" class="form-control" placeholder="Enter Critaria Code">
                 </div>
             </div>
             </div>
@@ -95,33 +80,26 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                    <h5 class="modal-title" id="editModalLabel">Edit Criteria</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/data-master/user" method="POST">
+                    <form action="/data-master/criteria" method="POST">
                         @csrf
                         @method('PUT')
                         <input type="hidden" id="userId" name="id">
 
-                        <div class="mb-3">
-                            <label for="userName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="userName" name="name" required>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="userEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="userEmail" name="email" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="userRole" class="form-label">Role</label>
-                            <input type="text" class="form-control" id="userRole" name="role" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="userPassword" class="form-label">Password (Leave blank to keep current)</label>
-                            <input type="password" class="form-control" id="userPassword" name="password">
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="email" class="form-label">Code Criteria</label>
+                            <input type="text" id="code" name="code" class="form-control" placeholder="Enter Critaria Code">
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -185,10 +163,10 @@
                 <div class="dropdown">
                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal" >
+                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal" onclick="openEditModal({{ $criteria->id }}, '{{ $criteria->name }}', '{{ $criteria->code }}')">
                         <i class="bx bx-edit-alt me-1"></i> Edit
                     </a>
-                    <a class="dropdown-item" href="javascript:void(0)">
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="openDeleteModal({{ $criteria->id }})">
                         <i class="bx bx-trash me-1"></i> Delete
                     </a>
                 </div>

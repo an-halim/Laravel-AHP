@@ -21,17 +21,7 @@ class CustomerController extends Controller
         $data_rumah = Alternative::all();
         $data_crt = SubCriteria::select('name')->distinct()->get();
         return view('customer/package/index', [
-            'data_rumah' => $data_rumah,
-            'data_crt' => $data_crt
-        ]);
-    }
-
-    public function indexlogin()
-    {
-        $data_rumah = Alternative::all();
-        $data_crt = SubCriteria::select('name')->distinct()->get();
-        return view('customer/package/indexlogin', [
-            'data_rumah' => $data_rumah,
+            'alternatives' => $data_rumah,
             'data_crt' => $data_crt
         ]);
     }

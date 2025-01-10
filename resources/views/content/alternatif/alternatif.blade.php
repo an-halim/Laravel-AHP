@@ -41,7 +41,6 @@
     </div>
 @endif
 
-<hr class="my-5">
 
 
 <!-- Modal Create-->
@@ -158,43 +157,122 @@
 
 <!-- Responsive Table -->
 <div class="card">
-  <h5 class="card-header d-flex justify-content-between align-items-center">
-    Data Rice Cooker
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">+ Tambah Rice Cooker</button>
-  </h5>
+    <h5 class="card-header d-flex justify-content-between align-items-center">
+        <span>Data Rice Cooker</span>
+        <div class="d-flex align-items-center gap-2">
+            <!-- Search Form -->
+            <form method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2"
+                       value="{{ request('search') }}" placeholder="Search...">
+                <button type="submit" class="btn btn-outline-secondary">Search</button>
+            </form>
+
+            <!-- Add Button -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
+                + Tambah
+            </button>
+        </div>
+    </h5>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead>
         <tr class="text-nowrap">
           <th>#</th>
-          <th>Model</th>
-          <th>Nama</th>
-          <th>Harga</th>
-          <th>Watt</th>
-          <th>Kapasitas</th>
-          <th>Daya Tahan</th>
+          <th>
+            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'model', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'model' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
+                Model
+                @if(request('sort_by') === 'model')
+                    @if(request('sort_direction') === 'asc')
+                        <i class="bx bx-chevron-up"></i>
+                    @else
+                        <i class="bx bx-chevron-down"></i>
+                    @endif
+                @endif
+            </a>
+          </th>
+          <th>
+            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'nama', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'nama' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
+                Nama
+                @if(request('sort_by') === 'nama')
+                    @if(request('sort_direction') === 'asc')
+                        <i class="bx bx-chevron-up"></i>
+                    @else
+                        <i class="bx bx-chevron-down"></i>
+                    @endif
+                @endif
+            </a>
+          </th>
+          <th>
+            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'harga', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'harga' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
+                Harga
+                @if(request('sort_by') === 'harga')
+                    @if(request('sort_direction') === 'asc')
+                        <i class="bx bx-chevron-up"></i>
+                    @else
+                        <i class="bx bx-chevron-down"></i>
+                    @endif
+                @endif
+            </a>
+          </th>
+          <th>
+            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'watt', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'watt' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
+                Watt
+                @if(request('sort_by') === 'watt')
+                    @if(request('sort_direction') === 'asc')
+                        <i class="bx bx-chevron-up"></i>
+                    @else
+                        <i class="bx bx-chevron-down"></i>
+                    @endif
+                @endif
+            </a>
+          </th>
+          <th>
+            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'kapasitas', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'kapasitas' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
+                Kapasitas
+                @if(request('sort_by') === 'kapasitas')
+                    @if(request('sort_direction') === 'asc')
+                        <i class="bx bx-chevron-up"></i>
+                    @else
+                        <i class="bx bx-chevron-down"></i>
+                    @endif
+                @endif
+            </a>
+          </th>
+          <th>
+            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'dayatahan', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'dayatahan' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
+                Daya Tahan
+                @if(request('sort_by') === 'dayatahan')
+                    @if(request('sort_direction') === 'asc')
+                        <i class="bx bx-chevron-up"></i>
+                    @else
+                        <i class="bx bx-chevron-down"></i>
+                    @endif
+                @endif
+            </a>
+          </th>
+          <th>Garansi</th>
           <th>Keterangan</th>
           <th>Gambar</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        <?php $no = 1; ?>
+        <?php $no = ($alternatifs->currentPage() - 1) * $alternatifs->perPage() + 1; ?>
         @if($alternatifs->count() > 0)
         @foreach($alternatifs as $DR)
         <tr>
-            <th scope="row">
-                <?php
-                echo $no++;
-                ?></th>
-            <td>{{ $DR->tipe }}</td>
-            <td>{{ $DR->lantai }}</td>
-            <td>{{ $DR->kamar }}</td>
-            <td>{{ $DR->luas }} M<sup>2</sup></td>
-            <td>Rp. {{ $DR->harga }}</td>
-            <td>{{ $DR->garasi }}</td>
-            <td>{{ Str::limit($DR->keterangan, 5, '') }}</td>
-            <td><img src="{{ url('/data_file/'.$DR->gambar) }}" alt="{{ $DR->gambar }}" width="200px" height="100px"></td>
+            <th scope="row">{{ $no++ }}</th>
+            <td>{{ $DR->model }}</td>
+            <td>{{ $DR->nama }}</td>
+            <td>{{ $DR->harga }}</td>
+            <td>{{ $DR->watt }}</td>
+            <td>{{ $DR->kapasitas }}</td>
+            <td>{{ $DR->dayatahan }}</td>
+            <td>{{ $DR->garansi }}</td>
+            <td>{{ Str::limit($DR->keterangan, 30, '') }}...</td>
+            <td>
+                <img src="{{ url('/data_file/'.$DR->gambar) }}" alt="{{ $DR->gambar }}" style="width: 200px; height: 100px; object-fit: cover;">
+            </td>
             <td>
                 <div class="dropdown">
                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
@@ -217,6 +295,9 @@
         @endif
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+        {!! $alternatifs->appends(request()->input())->links('pagination::bootstrap-4') !!}
+    </div>
   </div>
 </div>
 <!--/ Responsive Table -->
