@@ -15,6 +15,7 @@ class CreateComparisonsTable extends Migration
     {
         Schema::create('comparisons', function (Blueprint $table) {
             $table->id();
+            $table->string('model');
             $table->string('harga');
             $table->string('watt');
             $table->string('kapasitas');
