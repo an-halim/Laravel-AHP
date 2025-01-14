@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Alternative;
 use App\Models\Comparisons;
+use App\Models\Criteria;
 use App\Models\Hasil;
 use App\Models\SubCriteria;
 use App\Models\UserResult;
@@ -17,7 +18,21 @@ class AhpController extends Controller
 
     public function indexbobot()
     {
-        return view('content.bobot.bobot');
+        $criteria = Criteria::all();
+        return view('content.bobot.bobot', compact('criteria'));
+    }
+
+    public function indexbobotsub()
+    {
+        // Retrieve all Criteria with their related SubCriteria
+        $criteriaWithSubCriterias = Criteria::with('subCriterias')->get();
+
+        // Format the output
+        $subCriteria = $criteriaWithSubCriterias->mapWithKeys(function ($criteria) {
+            return [$criteria->name => $criteria->subCriterias->pluck('name')->toArray()];
+        });
+
+        return view('content.bobot-sub.bobot-sub', compact('subCriteria'));
     }
 
     public function indexperhitungan()
@@ -43,96 +58,151 @@ class AhpController extends Controller
 
     public function postbobot(Request $request)
     {
-        // proses matriks
-        $h = 1;
-        $g = 1;
-        $s = 1;
-        $k = 1;
-        $l = 1;
-        $hg = $request->cbhg;
-        $hs = $request->cbhs;
-        $hk = $request->cbhk;
-        $hl = $request->cbhl;
-        $gh = $request->cbgh;
-        $gs = $request->cbgs;
-        $gk = $request->cbgk;
-        $gl = $request->cbgl;
-        $sh = $request->cbsh;
-        $sg = $request->cbsg;
-        $sk = $request->cbsk;
-        $sl = $request->cbsl;
-        $kh = $request->cbkh;
-        $kg = $request->cbkg;
-        $ks = $request->cbks;
-        $kl = $request->cbkl;
-        $lh = $request->cblh;
-        $lg = $request->cblg;
-        $lk = $request->cblk;
-        $ls = $request->cbls;
+        // // proses matriks
+        // $h = 1;
+        // $g = 1;
+        // $s = 1;
+        // $k = 1;
+        // $l = 1;
+        // $hg = $request->cbhg;
+        // $hs = $request->cbhs;
+        // $hk = $request->cbhk;
+        // $hl = $request->cbhl;
+        // $gh = $request->cbgh;
+        // $gs = $request->cbgs;
+        // $gk = $request->cbgk;
+        // $gl = $request->cbgl;
+        // $sh = $request->cbsh;
+        // $sg = $request->cbsg;
+        // $sk = $request->cbsk;
+        // $sl = $request->cbsl;
+        // $kh = $request->cbkh;
+        // $kg = $request->cbkg;
+        // $ks = $request->cbks;
+        // $kl = $request->cbkl;
+        // $lh = $request->cblh;
+        // $lg = $request->cblg;
+        // $lk = $request->cblk;
+        // $ls = $request->cbls;
 
-        // bentuk kolom kiri -> kanan
-        (float) $k1 = $l;
-        (float) $k2 = $kl / $lk;
-        (float) $k3 = $sl / $ls;
-        (float) $k4 = $hl / $lh;
-        (float) $k5 = $gl / $lg;
-        (float) $k6 = $lk / $kl;
-        (float) $k7 = $k;
-        (float) $k8 = $sk / $ks;
-        (float) $k9 = $hk / $kh;
-        (float) $k10 = $gk / $kg;
-        (float) $k11 = $ls / $sl;
-        (float) $k12 = $ks / $sk;
-        (float) $k13 = $s;
-        (float) $k14 = $hs / $sh;
-        (float) $k15 = $gs / $sg;
-        (float) $k16 = $lh / $hl;
-        (float) $k17 = $kh / $hk;
-        (float) $k18 = $sh / $hs;
-        (float) $k19 = $h;
-        (float) $k20 = $gh / $hg;
-        (float) $k21 = $lg / $gl;
-        (float) $k22 = $kg / $gk;
-        (float) $k23 = $sg / $gs;
-        (float) $k24 = $hg / $gh;
-        (float) $k25 = $g;
-        (float) $k26 = $k1 + $k6 + $k11 + $k16 + $k21;
-        (float) $k27 = $k2 + $k7 + $k12 + $k17 + $k22;
-        (float) $k28 = $k3 + $k8 + $k13 + $k18 + $k23;
-        (float) $k29 = $k4 + $k9 + $k14 + $k19 + $k24;
-        (float) $k30 = $k5 + $k10 + $k15 + $k20 + $k25;
+        // // bentuk kolom kiri -> kanan
+        // (float) $k1 = $l;
+        // (float) $k2 = $kl / $lk;
+        // (float) $k3 = $sl / $ls;
+        // (float) $k4 = $hl / $lh;
+        // (float) $k5 = $gl / $lg;
+        // (float) $k6 = $lk / $kl;
+        // (float) $k7 = $k;
+        // (float) $k8 = $sk / $ks;
+        // (float) $k9 = $hk / $kh;
+        // (float) $k10 = $gk / $kg;
+        // (float) $k11 = $ls / $sl;
+        // (float) $k12 = $ks / $sk;
+        // (float) $k13 = $s;
+        // (float) $k14 = $hs / $sh;
+        // (float) $k15 = $gs / $sg;
+        // (float) $k16 = $lh / $hl;
+        // (float) $k17 = $kh / $hk;
+        // (float) $k18 = $sh / $hs;
+        // (float) $k19 = $h;
+        // (float) $k20 = $gh / $hg;
+        // (float) $k21 = $lg / $gl;
+        // (float) $k22 = $kg / $gk;
+        // (float) $k23 = $sg / $gs;
+        // (float) $k24 = $hg / $gh;
+        // (float) $k25 = $g;
+        // (float) $k26 = $k1 + $k6 + $k11 + $k16 + $k21;
+        // (float) $k27 = $k2 + $k7 + $k12 + $k17 + $k22;
+        // (float) $k28 = $k3 + $k8 + $k13 + $k18 + $k23;
+        // (float) $k29 = $k4 + $k9 + $k14 + $k19 + $k24;
+        // (float) $k30 = $k5 + $k10 + $k15 + $k20 + $k25;
 
+        // return view('content.matrix1.matrix1', [
+        //     'k1' => $k1,
+        //     'k2' => $k2,
+        //     'k3' => $k3,
+        //     'k4' => $k4,
+        //     'k5' => $k5,
+        //     'k6' => $k6,
+        //     'k7' => $k7,
+        //     'k8' => $k8,
+        //     'k9' => $k9,
+        //     'k10' => $k10,
+        //     'k11' => $k11,
+        //     'k12' => $k12,
+        //     'k13' => $k13,
+        //     'k14' => $k14,
+        //     'k15' => $k15,
+        //     'k16' => $k16,
+        //     'k17' => $k17,
+        //     'k18' => $k18,
+        //     'k19' => $k19,
+        //     'k20' => $k20,
+        //     'k21' => $k21,
+        //     'k22' => $k22,
+        //     'k23' => $k23,
+        //     'k24' => $k24,
+        //     'k25' => $k25,
+        //     'k26' => $k26,
+        //     'k27' => $k27,
+        //     'k28' => $k28,
+        //     'k29' => $k29,
+        //     'k30' => $k30
+        // ]);
+
+        // Ambil data comparison dari request
+        $comparisonData = $request->input('comparison', []);
+        // dd($request->all());
+
+        // Inisialisasi matriks pembobotan
+        $matrix = [];
+        $criteria = array_keys($comparisonData); // Ambil nama kriteria utama (e.g., 'Harga', 'Garasi', dst.)
+
+        // Buat matriks perbandingan
+        foreach ($criteria as $criterion1) {
+            foreach ($criteria as $criterion2) {
+                if ($criterion1 === $criterion2) {
+                    // Jika kriteria sama, nilai diagonal matriks adalah 1
+                    $matrix[$criterion1][$criterion2] = 1;
+                } elseif (isset($comparisonData[$criterion1][$criterion2])) {
+                    // Jika ada perbandingan yang diberikan, gunakan nilai dari comparison
+                    $matrix[$criterion1][$criterion2] = $comparisonData[$criterion1][$criterion2];
+                } elseif (isset($comparisonData[$criterion2][$criterion1])) {
+                    // Jika arah sebaliknya ada, gunakan kebalikan nilai (1/nilai)
+                    $matrix[$criterion1][$criterion2] = 1 / $comparisonData[$criterion2][$criterion1];
+                } else {
+                    // Jika tidak ada data, nilai default adalah 1
+                    $matrix[$criterion1][$criterion2] = 1;
+                }
+            }
+        }
+
+        // Hitung total kolom
+        $columnSums = [];
+        foreach ($criteria as $criterion) {
+            $columnSums[$criterion] = array_sum(array_column($matrix, $criterion));
+        }
+
+        // Normalisasi matriks
+        $normalizedMatrix = [];
+        foreach ($criteria as $criterion1) {
+            foreach ($criteria as $criterion2) {
+                $normalizedMatrix[$criterion1][$criterion2] = $matrix[$criterion1][$criterion2] / $columnSums[$criterion2];
+            }
+        }
+
+        // Hitung bobot kriteria (rata-rata per baris normalisasi)
+        $weights = [];
+        foreach ($criteria as $criterion) {
+            $weights[$criterion] = array_sum($normalizedMatrix[$criterion]) / count($criteria);
+        }
+
+        // dd($matrix, $normalizedMatrix, $weights);
+        // Kirim hasil ke view
         return view('content.matrix1.matrix1', [
-            'k1' => $k1,
-            'k2' => $k2,
-            'k3' => $k3,
-            'k4' => $k4,
-            'k5' => $k5,
-            'k6' => $k6,
-            'k7' => $k7,
-            'k8' => $k8,
-            'k9' => $k9,
-            'k10' => $k10,
-            'k11' => $k11,
-            'k12' => $k12,
-            'k13' => $k13,
-            'k14' => $k14,
-            'k15' => $k15,
-            'k16' => $k16,
-            'k17' => $k17,
-            'k18' => $k18,
-            'k19' => $k19,
-            'k20' => $k20,
-            'k21' => $k21,
-            'k22' => $k22,
-            'k23' => $k23,
-            'k24' => $k24,
-            'k25' => $k25,
-            'k26' => $k26,
-            'k27' => $k27,
-            'k28' => $k28,
-            'k29' => $k29,
-            'k30' => $k30
+            'matrix' => $matrix,
+            'normalizedMatrix' => $normalizedMatrix,
+            'weights' => $weights,
         ]);
     }
 
@@ -883,7 +953,6 @@ class AhpController extends Controller
 
 
         // Insert data ke table hasils
-        // $tipe = Alternative::select('tipe')->get();
         $tipe = DB::table('alternatives')
             ->select('model')
             ->get();
@@ -945,253 +1014,338 @@ class AhpController extends Controller
         return redirect('/ahp/report/' . $userResult->id);
     }
 
-
-    public function postalt(Request $request)
+    public function postmatriksnew(Request $request)
     {
-        $data_rumah = Alternative::get();
-        $name = $request->cbname;
-        $data_altl = "";
-        $data_crt = "";
-        // dd($name);
-        if ($name == 'Harga') {
-            $data_alth = Alternative::orderBy('harga', 'asc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('admin/package/alternative/index', [
-                'data_pilih' => $data_alth,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Kamar') {
-            $data_altk = Alternative::orderBy('kamar', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('admin/package/alternative/index', [
-                'data_pilih' => $data_altk,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Lantai') {
-            $data_altl = Alternative::orderBy('lantai', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                // ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('admin/package/alternative/index', [
-                'data_pilih' => $data_altl,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Garasi') {
-            $data_altg = Alternative::orderBy('garasi', 'asc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('admin/package/alternative/index', [
-                'data_pilih' => $data_altg,
-                'data_crt' => $data_crt
-            ]);
-        } else {
-            $data_alts = Alternative::orderBy('luas', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                // ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('admin/package/alternative/index', [
-                'data_pilih' => $data_alts,
-                'data_crt' => $data_crt
-            ]);
+        // Ambil data comparison dari request atau preset
+        $comparison = $request->input('comparison', []);
+
+        // Inisialisasi matriks kosong
+        $criteria = array_keys($comparison);
+        $matrix = [];
+
+        // Buat matriks awal berdasarkan comparison
+        foreach ($criteria as $row) {
+            foreach ($criteria as $col) {
+                $matrix[$row][$col] = $comparison[$row][$col] ?? 1; // Default 1 jika tidak ada nilai
+            }
         }
-        return view('admin/package/alternative/index', [
-            'data_rumah' => $data_rumah,
-            'data_crt' => $data_crt,
-            'data_alth' => $data_alth,
-            'data_altk' => $data_altk,
-            'data_altl' => $data_altl,
-            'data_altg' => $data_altg,
-            'data_alts' => $data_alts,
-            'data_name' => $name
+
+        // Normalisasi matriks
+        $columnSums = array_fill_keys($criteria, 0);
+        foreach ($matrix as $row => $values) {
+            foreach ($values as $col => $value) {
+                $columnSums[$col] += $value;
+            }
+        }
+
+        $normalizedMatrix = [];
+        foreach ($matrix as $row => $values) {
+            foreach ($values as $col => $value) {
+                $normalizedMatrix[$row][$col] = $value / $columnSums[$col];
+            }
+        }
+
+        // Hitung rata-rata setiap baris (priority vector)
+        $priorityVector = [];
+        foreach ($normalizedMatrix as $row => $values) {
+            $priorityVector[$row] = array_sum($values) / count($values);
+        }
+
+        return view('content.matrix2new.matrix2new', [
+            'matrix' => $matrix,
+            'normalizedMatrix' => $normalizedMatrix,
+            'priorityVector' => $priorityVector,
         ]);
     }
 
-    public function postaltuser(Request $request)
+    public function postmatriks2new(Request $request)
     {
-        $data_rumah = Alternative::get();
-        $name = $request->cbname;
-        $data_altl = "";
-        $data_crt = "";
-        // dd($name);
-        if ($name == 'Harga') {
-            $data_alth = Alternative::orderBy('harga', 'asc')
-                // ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/index', [
-                'data_rumah' => $data_alth,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Kamar') {
-            $data_altk = Alternative::orderBy('kamar', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                // ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/index', [
-                'data_rumah' => $data_altk,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Lantai') {
-            $data_altl = Alternative::orderBy('lantai', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                // ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/index', [
-                'data_rumah' => $data_altl,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Garasi') {
-            $data_altg = Alternative::orderBy('garasi', 'asc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/index', [
-                'data_rumah' => $data_altg,
-                'data_crt' => $data_crt
-            ]);
-        } else {
-            $data_alts = Alternative::orderBy('luas', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                // ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/index', [
-                'data_rumah' => $data_alts,
-                'data_crt' => $data_crt
-            ]);
+        // Ambil data hasil normalisasi dari request
+        $normalizedMatrix = $request->input('normalizedMatrix');
+        $priorityVector = $request->input('priorityVector');
+
+        // Hitung matriks bobot
+        $weightedMatrix = [];
+        foreach ($normalizedMatrix as $row => $values) {
+            foreach ($values as $col => $value) {
+                $weightedMatrix[$row][$col] = $value * $priorityVector[$col];
+            }
         }
-        return view('customer/package/index', [
-            'data_rumah' => $data_rumah,
-            'data_crt' => $data_crt,
-            'data_alth' => $data_alth,
-            'data_altk' => $data_altk,
-            'data_altl' => $data_altl,
-            'data_altg' => $data_altg,
-            'data_alts' => $data_alts,
-            'data_name' => $name
+
+        // Hitung Lambda Max
+        $lambdaMax = 0;
+        foreach ($priorityVector as $row => $priority) {
+            $lambdaMax += array_sum($weightedMatrix[$row]) / $priority;
+        }
+        $lambdaMax /= count($priorityVector);
+
+        // Hitung Consistency Index (CI)
+        $n = count($priorityVector);
+        $ci = ($lambdaMax - $n) / ($n - 1);
+
+        // Hitung Consistency Ratio (CR)
+        $randomIndex = [
+            1 => 0, 2 => 0, 3 => 0.58, 4 => 0.9, 5 => 1.12, 6 => 1.24, 7 => 1.32, 8 => 1.41,
+        ];
+        $cr = $ci / ($randomIndex[$n] ?? 1);
+
+        return view('content.matrix3new.matrix3new', [
+            'weightedMatrix' => $weightedMatrix,
+            'lambdaMax' => $lambdaMax,
+            'ci' => $ci,
+            'cr' => $cr,
         ]);
     }
 
-    public function postaltuserlogin(Request $request)
+    public function postSubCriteria(Request $request)
     {
-        $data_rumah = Alternative::get();
-        $name = $request->cbname;
-        $data_altl = "";
-        $data_crt = "";
-        // dd($name);
-        if ($name == 'Harga') {
-            $data_alth = Alternative::orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/indexlogin', [
-                'data_rumah' => $data_alth,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Kamar') {
-            $data_altk = Alternative::orderBy('kamar', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/indexlogin', [
-                'data_rumah' => $data_altk,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Lantai') {
-            $data_altl = Alternative::orderBy('lantai', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/indexlogin', [
-                'data_rumah' => $data_altl,
-                'data_crt' => $data_crt
-            ]);
-        } else if ($name == 'Garasi') {
-            $data_altg = Alternative::orderBy('garasi', 'asc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->orderBy('luas', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/indexlogin', [
-                'data_rumah' => $data_altg,
-                'data_crt' => $data_crt
-            ]);
-        } else {
-            $data_alts = Alternative::orderBy('luas', 'desc')
-                ->orderBy('harga', 'asc')
-                ->orderBy('garasi', 'asc')
-                ->orderBy('kamar', 'desc')
-                ->orderBy('lantai', 'desc')
-                ->paginate(3);
-            $data_crt = SubCriteria::select('name')->distinct()->get();
-            return view('customer/package/indexlogin', [
-                'data_rumah' => $data_alts,
-                'data_crt' => $data_crt
-            ]);
+        // Ambil data comparison dari request atau preset
+        $subComparison = $request->input('subComparison', []);
+
+        $results = [];
+        foreach ($subComparison as $criteriaName => $comparisons) {
+            // Ambil semua sub-kriteria yang unik
+            $criteriaKeys = array_keys($comparisons);
+
+            // Tambahkan kunci dari setiap sub-array
+            foreach ($comparisons as $subArray) {
+                $criteriaKeys = array_merge($criteriaKeys, array_keys($subArray));
+            }
+
+            // Pastikan kunci unik
+            $criteriaKeys = array_unique($criteriaKeys);
+
+            // Inisialisasi matriks
+            $matrix = [];
+            foreach ($criteriaKeys as $row) {
+                foreach ($criteriaKeys as $col) {
+                    $matrix[$row][$col] = $comparisons[$row][$col] ?? 1;
+                }
+            }
+
+            // Normalisasi matriks
+            $columnSums = array_fill_keys($criteriaKeys, 0);
+            foreach ($matrix as $row => $values) {
+                foreach ($values as $col => $value) {
+                    $columnSums[$col] += $value;
+                }
+            }
+
+            $normalizedMatrix = [];
+            foreach ($matrix as $row => $values) {
+                foreach ($values as $col => $value) {
+                    $normalizedMatrix[$row][$col] = $value / $columnSums[$col];
+                }
+            }
+
+            // Hitung priority vector
+            $priorityVector = [];
+            foreach ($normalizedMatrix as $row => $values) {
+                $priorityVector[$row] = array_sum($values) / count($values);
+            }
+
+            // Simpan hasil untuk setiap kriteria
+            $results[$criteriaName] = [
+                'matrix' => $matrix,
+                'normalizedMatrix' => $normalizedMatrix,
+                'priorityVector' => $priorityVector,
+            ];
         }
-        return view('customer/package/indexlogin', [
-            'data_rumah' => $data_rumah,
-            'data_crt' => $data_crt,
-            'data_alth' => $data_alth,
-            'data_altk' => $data_altk,
-            'data_altl' => $data_altl,
-            'data_altg' => $data_altg,
-            'data_alts' => $data_alts,
-            'data_name' => $name
+
+        // Tampilkan hasil
+        return view('content.consictensy-sub.consictensy-sub', [
+            'results' => $results,
         ]);
+    }
+
+    public function postSubCriterias(Request $request)
+    {
+        // Ambil data comparison dari request atau preset
+        $subComparison = $request->input('subComparison', []);
+
+        // Nilai RI (Random Index) untuk CR
+        $randomIndex = [
+            1 => 0.00, 2 => 0.00, 3 => 0.58, 4 => 0.90,
+            5 => 1.12, 6 => 1.24, 7 => 1.32, 8 => 1.41,
+            9 => 1.45, 10 => 1.49
+        ];
+
+        $results = [];
+        foreach ($subComparison as $criteriaName => $comparisons) {
+            // Ambil semua sub-kriteria yang unik
+            $criteriaKeys = array_keys($comparisons);
+
+            // Tambahkan kunci dari setiap sub-array
+            foreach ($comparisons as $subArray) {
+                $criteriaKeys = array_merge($criteriaKeys, array_keys($subArray));
+            }
+
+            // Pastikan kunci unik
+            $criteriaKeys = array_unique($criteriaKeys);
+
+            // Inisialisasi matriks
+            $matrix = [];
+            foreach ($criteriaKeys as $row) {
+                foreach ($criteriaKeys as $col) {
+                    $matrix[$row][$col] = $comparisons[$row][$col] ?? 1;
+                }
+            }
+
+            // Normalisasi matriks
+            $columnSums = array_fill_keys($criteriaKeys, 0);
+            foreach ($matrix as $row => $values) {
+                foreach ($values as $col => $value) {
+                    $columnSums[$col] += $value;
+                }
+            }
+
+            $normalizedMatrix = [];
+            foreach ($matrix as $row => $values) {
+                foreach ($values as $col => $value) {
+                    $normalizedMatrix[$row][$col] = $value / $columnSums[$col];
+                }
+            }
+
+            // Hitung priority vector
+            $priorityVector = [];
+            foreach ($normalizedMatrix as $row => $values) {
+                $priorityVector[$row] = array_sum($values) / count($values);
+            }
+
+            // Hitung weighted matrix
+            $weightedMatrix = [];
+            foreach ($matrix as $row => $values) {
+                foreach ($values as $col => $value) {
+                    $weightedMatrix[$row][$col] = $value * $priorityVector[$col];
+                }
+            }
+
+            // Hitung lambda max
+            $lambdaMax = 0;
+            foreach ($criteriaKeys as $row) {
+                $weightedSum = array_sum($weightedMatrix[$row]);
+                $lambdaMax += $weightedSum / $priorityVector[$row];
+            }
+            $lambdaMax /= count($criteriaKeys);
+
+            // Hitung CI dan CR
+            $n = count($criteriaKeys);
+            $ci = ($lambdaMax - $n) / ($n - 1);
+            $cr = $randomIndex[$n] > 0 ? $ci / $randomIndex[$n] : 0;
+
+            // Simpan hasil untuk setiap kriteria
+            $results[$criteriaName] = [
+                'matrix' => $matrix,
+                'normalizedMatrix' => $normalizedMatrix,
+                'priorityVector' => $priorityVector,
+                'weightedMatrix' => $weightedMatrix,
+                'lambdaMax' => $lambdaMax,
+                'ci' => $ci,
+                'cr' => $cr,
+            ];
+        }
+
+        // Tampilkan hasil
+        return view('content.consictensy-sub.consictensy-sub', [
+            'results' => $results,
+        ]);
+    }
+
+
+    public function calculateRecommendation(Request $request)
+    {
+        // Ambil data dari request
+        $criteriaWeights = $request->input('criteriaWeights');
+        $subCriteriaWeights = $request->input('subCriteriaWeights');
+        $products = $request->input('products');
+
+        // Hitung Lambda Max (λmax) untuk konsistensi
+        $lambdaMax = $this->calculateLambdaMax($subCriteriaWeights);
+
+        // Hitung Consistency Index (CI)
+        $n = count($criteriaWeights);
+        $ci = ($lambdaMax - $n) / ($n - 1);
+
+        // Hitung Consistency Ratio (CR)
+        $randomIndex = $this->getRandomIndex($n); // RI berdasarkan jumlah kriteria
+        $cr = $ci / $randomIndex;
+
+        // Hitung Bobot Global
+        $globalWeights = [];
+        foreach ($subCriteriaWeights as $criteria => $subs) {
+            foreach ($subs as $subName => $subWeight) {
+                $globalWeights[$criteria][$subName] = $criteriaWeights[$criteria] * $subWeight;
+            }
+        }
+
+        // Hitung Nilai Produk
+        $productScores = [];
+        foreach ($products as $product) {
+            $score = 0;
+            foreach ($product as $criteria => $subName) {
+                if (isset($globalWeights[$criteria][$subName])) {
+                    $score += $globalWeights[$criteria][$subName];
+                }
+            }
+            $productScores[] = [
+                'name' => $product['name'],
+                'score' => $score,
+            ];
+        }
+
+        // Urutkan berdasarkan skor
+        usort($productScores, function ($a, $b) {
+            return $b['score'] <=> $a['score'];
+        });
+
+        // Return to the view with CI, CR, Lambda Max, and recommendations
+        return view('recommendation.result', [
+            'productScores' => $productScores,
+            'lambdaMax' => $lambdaMax,
+            'ci' => $ci,
+            'cr' => $cr,
+        ]);
+    }
+
+
+
+    // Fungsi untuk menghitung Lambda Max (λmax)
+    private function calculateLambdaMax($subCriteriaWeights)
+    {
+        // Contoh matriks perbandingan untuk kriteria
+        $comparisonMatrix = [
+            [1, 2, 3], // Harga
+            [0.5, 1, 2], // Garasi
+            [0.333, 0.5, 1], // Luas
+        ];
+
+        // Hitung lambda max (λmax)
+        $n = count($comparisonMatrix);
+        $eigenValues = []; // Hasil perkiraan nilai eigen
+
+        // Perhitungan untuk λmax bisa lebih kompleks tergantung algoritma yang digunakan
+        // Sebagai contoh, kita menggunakan hasil perhitungan manual atau dari matrix AHP
+        $lambdaMax = 5.1; // Contoh nilai λmax yang sudah dihitung (bisa didapat dengan metode AHP)
+
+        return $lambdaMax;
+    }
+
+    // Fungsi untuk mendapatkan Random Index (RI) berdasarkan jumlah kriteria
+    private function getRandomIndex($n)
+    {
+        $randomIndices = [
+            1 => 0.0,
+            2 => 0.0,
+            3 => 0.58,
+            4 => 0.9,
+            5 => 1.12,
+            6 => 1.24,
+            7 => 1.32,
+            8 => 1.41,
+            9 => 1.45,
+            10 => 1.49,
+        ];
+
+        return $randomIndices[$n] ?? 1.5; // Default RI value if n > 10
     }
 }

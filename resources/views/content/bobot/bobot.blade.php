@@ -22,7 +22,7 @@
 @endif
 
 <div class="card">
-    <h5 class="card-header d-flex justify-content-between align-items-center">
+    {{-- <h5 class="card-header d-flex justify-content-between align-items-center">
         Nilai Perbandingan Matriks
     </h5>
     <div class="table-responsive text-nowrap">
@@ -268,8 +268,63 @@
             </div>
         </div>
         </form>
+    </div> --}}
+
+    <div class="card">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+            Nilai Perbandingan Matriks
+        </h5>
+        <div class="table-responsive text-nowrap">
+            <form action="{{ route('postbobot') }}" method="post">
+                @csrf
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nama Kriteria 1</th>
+                            <th>Nilai Banding</th>
+                            <th>Nama Kriteria 2</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach ($criteria as $index1 => $crit1)
+                            @foreach ($criteria as $index2 => $crit2)
+                                @if ($index1 < $index2) {{-- Avoid duplicates and self-comparison --}}
+                                    <tr>
+                                        <td>{{ $crit1->name }}</td>
+                                        <td>
+                                            <select class="form-control" name="comparison[{{ $crit1->name }}][{{ $crit2->name }}]">
+                                                <option value="1" {{ (isset($comparison[$crit1->name][$crit2->name]) && $comparison[$crit1->name][$crit2->name] == 1) ? 'selected' : '' }}>
+                                                    {{ $crit1->name }} Sama Penting dengan {{ $crit2->name }} (Nilai = 1)
+                                                </option>
+                                                <option value="2" {{ (isset($comparison[$crit1->name][$crit2->name]) && $comparison[$crit1->name][$crit2->name] == 2) ? 'selected' : '' }}>
+                                                    {{ $crit1->name }} Lebih Penting daripada {{ $crit2->name }} (Nilai = 2)
+                                                </option>
+                                                <option value="3" {{ (isset($comparison[$crit1->name][$crit2->name]) && $comparison[$crit1->name][$crit2->name] == 3) ? 'selected' : '' }}>
+                                                    {{ $crit1->name }} Sangat Penting daripada {{ $crit2->name }} (Nilai = 3)
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>{{ $crit2->name }}</td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @endforeach
+                    </tbody>
+
+                </table>
+                <div class="row justify-content-between m-4">
+                    <div class="col-md-6 d-grid">
+                       <button type="submit" class="btn btn-primary">Hitung</button>
+                    </div>
+                    <div class="col-md-6 d-grid">
+                       <button type="button" class="btn btn-warning" onclick="kembalibobot();">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
+
+</div>
 <script>
     function kembalibobot() {
         window.location.href = "/admin/alternative";

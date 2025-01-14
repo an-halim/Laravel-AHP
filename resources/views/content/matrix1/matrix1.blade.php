@@ -31,16 +31,68 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Variabel</th>
-                        <th>Lantai</th>
-                        <th>Kamar</th>
-                        <th>Luas</th>
-                        <th>Harga</th>
-                        <th>Garasi</th>
+                        <th></th>
+                        @foreach(array_keys($matrix) as $criterion)
+                            <th>{{ $criterion }}</th>
+                        @endforeach
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    <tr>
+                    @foreach($matrix as $rowCriterion => $rowValues)
+                        <tr>
+                            <td>{{ $rowCriterion }}</td>
+                            @foreach($rowValues as $columnCriterion => $value)
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        name="comparison[{{ $rowCriterion }}][{{ $columnCriterion }}]"
+                                        class="form-control"
+                                        value="{{ $value }}"
+                                        required
+                                    >
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <h5 class="card-footer d-flex justify-content-between align-items-center">
+                Bobot Kriteria
+            </h5>
+            @if(!empty($weights))
+                <ul>
+                    @foreach($weights as $criterion => $weight)
+                        <li>{{ $criterion }}: {{ number_format($weight, 4) }}</li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-muted">Belum ada hasil. Silakan hitung untuk melihat bobot kriteria.</p>
+            @endif
+
+            <div class="row justify-content-between m-4">
+                <div class="col-md-6 d-grid">
+                    <button type="submit" class="btn btn-primary">Hitung</button>
+                </div>
+                <div class="col-md-6 d-grid">
+                    <button type="button" class="btn btn-warning" onclick="kembalibobot();">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function kembalibobot() {
+        window.location.href = "/admin/alternative";
+    }
+</script>
+
+@endsection
+
+
+{{-- <tr>
                         <td>Lantai</td>
                         <td><input type="number" name="k1" value="{{ $k1 }}" readonly></td>
                         <td><input type="number" name="k2" value="{{ $k2 }}" readonly></td>
@@ -117,24 +169,4 @@
                     <td>{{ $k28 }}</td>
                     <td>{{ $k29 }}</td>
                     <td>{{ $k30 }}</td> -->
-                    </tr>
-                </tbody>
-            </table>
-            <div class="row justify-content-between m-4">
-            <div class="col-md-6 d-grid">
-                <button type="submit" class="btn btn-primary">Hitung</button>
-            </div>
-            <div class="col-md-6 d-grid">
-                <button type="button" class="btn btn-warning" onclick="kembalibobot();">Cancel</button>
-            </div>
-        </div>
-        </form>
-    </div>
-  </div>
-<script>
-    function kembalibobot() {
-        window.location.href = "/admin/alternative";
-    }
-</script>
-
-@endsection
+                    </tr> --}}

@@ -48,7 +48,7 @@
 <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="{{ route('create-user') }}" method="post">
+        <form action="{{ route('data-master-sub-criteria') }}" method="post">
          @csrf
             <div class="modal-header">
             <h5 class="modal-title" id="modalCenterTitle">Tambah Sub Criteria</h5>
@@ -63,11 +63,11 @@
             </div>
             <div class="row">
                 <div class="col mb-3">
-                <label for="cbname" class="form-label">Criteria Name</label>
-                <select class="form-control" name="cbname">
+                <label for="criteria_id" class="form-label">Criteria Name</label>
+                <select class="form-control" name="criteria_id">
                     @if($criterias->count() > 0)
                     @foreach($criterias as $criteria)
-                    <option value="{{ $criteria->name }}">{{ $criteria->name }}</option>
+                    <option value="{{ $criteria->id }}">{{ $criteria->name }}</option>
                     @endforeach
                     @else
                     <option value="none" disabled>Data kriteria tidak tersedia</option>
@@ -75,6 +75,27 @@
                 </select>
                 </div>
             </div>
+            <div class="row">
+                <div class="col mb-3">
+                <label for="name" class="form-label">Sub Criteria Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
+                </div>
+            </div>
+            {{-- <div class="row">
+                <div class="col mb-3">
+                <label for="subcriteria" class="form-label">Enter an operator and a number (e.g., ">100"):</label>
+                <input
+                    type="text"
+                    id="subcriteria"
+                    name="subcriteria"
+                    placeholder="e.g., >100"
+                    pattern="^(>|<|>=|<=|=)\d+(\.\d+)?$"
+                    required
+                    class="form-control"
+                    title="Input must match a valid operator followed by a number, e.g., '>100' or '<=100'"
+                />
+                </div>
+            </div> --}}
             <div class="row">
                 <div class="col mb-3">
                 <label for="nilaik" class="form-label">Criteria Value</label>
@@ -110,7 +131,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/data-master/user" method="POST">
+                    <form action="/data-master/sub-criteria" method="POST">
                         @csrf
                         @method('PUT')
                         <input type="hidden" id="userId" name="id">
@@ -179,6 +200,7 @@
                     <th>#</th>
                     <th>ID Sub Criteria</th>
                     <th>Nama Criteria</th>
+                    <th>Nama Sub Criteria</th>
                     <th>Nilai Criteria</th>
                     <th>Bobot Criteria</th>
                     <th>Actions</th>
@@ -191,6 +213,7 @@
                         <tr>
                             <th scope="row">{{ $no++ }}</th>
                             <td>{{ $criteria->code }}</td>
+                            <td>{{ $criteria->name }}</td>
                             <td>{{ $criteria->name }}</td>
                             <td>{{ $criteria->nilaik }}</td>
                             <td>{{ $criteria->nilaib }}</td>

@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubCriteria extends Model
 {
-    protected $fillable = ['code', 'name', 'nilaik', 'nilaib'];
+    protected $fillable = ['code', 'criteria_id', 'name', 'nilaik', 'nilaib'];
     protected $dates = ['deleted_at'];
+
+    public function criteria()
+    {
+        return $this->belongsTo(Criteria::class);
+    }
 }

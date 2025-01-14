@@ -125,9 +125,13 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Perhitungan AHP Admin
     Route::get('/ahp/bobot', [AhpController::class, 'indexbobot'])->name('ahp-bobot');
+    Route::get('/ahp/bobot-sub', [AhpController::class, 'indexbobotsub'])->name('ahp-bobot-sub');
+    Route::post('/ahp/bobot-sub', [AhpController::class, 'postSubCriteria'])->name('postSubCriteria');
     Route::post('/ahp/bobot/postbobot', [AhpController::class, 'postbobot'])->name('postbobot');
-    Route::post('/ahp/bobot/postmatriks', [AhpController::class, 'postmatriks'])->name('postmatriks');
-    Route::post('/ahp/bobot/postmatriks2', [AhpController::class, 'postmatriks2'])->name('postmatriks2');
+    // Route::post('/ahp/bobot/postmatriks', [AhpController::class, 'postmatriks'])->name('postmatriks');
+    Route::post('/ahp/bobot/postmatriks', [AhpController::class, 'postmatriksnew'])->name('postmatriks');
+    Route::post('/ahp/bobot/postmatriks2', [AhpController::class, 'postmatriks2new'])->name('postmatriks2');
+    // Route::post('/ahp/bobot/postmatriks2', [AhpController::class, 'postmatriks2'])->name('postmatriks2');
     Route::post('/ahp/bobot/cekkonsistensi', [AhpController::class, 'cekkonsistensi'])->name('cekkonsistensi');
     Route::post('/ahp/bobot/posthasilrekomendasi', [AhpController::class, 'posthasilrekomendasi'])->name('posthasilrekomendasi');
     Route::get('/ahp/bobot/kesimpulan/{tipe}', [HasilController::class, 'tampilkesimpulan']);

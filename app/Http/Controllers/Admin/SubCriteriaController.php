@@ -75,7 +75,8 @@ class SubCriteriaController extends Controller
     {
         $this->validate($request, [
             'code' => 'required',
-            'cbname' => 'required',
+            'criteria_id' => 'required',
+            'name' => 'required',
             'nilaik' => 'required',
             'cbnilaib' => 'required'
         ]);
@@ -85,7 +86,8 @@ class SubCriteriaController extends Controller
 
             SubCriteria::create([
                 'code' => $request->code,
-                'name' => $request->cbname,
+                'criteria_id' => $request->criteria_id,
+                'name' => $request->name,
                 'nilaik' => $request->nilaik,
                 'nilaib' => $request->cbnilaib
             ]);

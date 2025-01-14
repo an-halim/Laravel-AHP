@@ -67,7 +67,7 @@
                 },
                 {
                     "url": "/ahp/bobot",
-                    "name": "Bobot Criteria",
+                    "name": "Perhitungan Bobot",
                     "slug": "ahp-bobot",
                     "permisson": "Admin,user,Customer"
                 },

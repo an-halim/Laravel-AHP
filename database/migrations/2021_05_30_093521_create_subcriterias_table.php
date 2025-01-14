@@ -15,6 +15,7 @@ class CreateSubcriteriasTable extends Migration
     {
         Schema::create('sub_criterias', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('criteria_id')->constrained('criterias')->onDelete('cascade');
             $table->string('code')->unique();
             $table->string('name');
             $table->string('nilaik');
