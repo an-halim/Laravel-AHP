@@ -213,7 +213,7 @@
                         <tr>
                             <th scope="row">{{ $no++ }}</th>
                             <td>{{ $criteria->code }}</td>
-                            <td>{{ $criteria->name }}</td>
+                            <td>{{ $criteria->criteria->name }}</td>
                             <td>{{ $criteria->name }}</td>
                             <td>{{ $criteria->nilaik }}</td>
                             <td>{{ $criteria->nilaib }}</td>

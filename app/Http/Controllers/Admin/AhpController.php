@@ -58,98 +58,6 @@ class AhpController extends Controller
 
     public function postbobot(Request $request)
     {
-        // // proses matriks
-        // $h = 1;
-        // $g = 1;
-        // $s = 1;
-        // $k = 1;
-        // $l = 1;
-        // $hg = $request->cbhg;
-        // $hs = $request->cbhs;
-        // $hk = $request->cbhk;
-        // $hl = $request->cbhl;
-        // $gh = $request->cbgh;
-        // $gs = $request->cbgs;
-        // $gk = $request->cbgk;
-        // $gl = $request->cbgl;
-        // $sh = $request->cbsh;
-        // $sg = $request->cbsg;
-        // $sk = $request->cbsk;
-        // $sl = $request->cbsl;
-        // $kh = $request->cbkh;
-        // $kg = $request->cbkg;
-        // $ks = $request->cbks;
-        // $kl = $request->cbkl;
-        // $lh = $request->cblh;
-        // $lg = $request->cblg;
-        // $lk = $request->cblk;
-        // $ls = $request->cbls;
-
-        // // bentuk kolom kiri -> kanan
-        // (float) $k1 = $l;
-        // (float) $k2 = $kl / $lk;
-        // (float) $k3 = $sl / $ls;
-        // (float) $k4 = $hl / $lh;
-        // (float) $k5 = $gl / $lg;
-        // (float) $k6 = $lk / $kl;
-        // (float) $k7 = $k;
-        // (float) $k8 = $sk / $ks;
-        // (float) $k9 = $hk / $kh;
-        // (float) $k10 = $gk / $kg;
-        // (float) $k11 = $ls / $sl;
-        // (float) $k12 = $ks / $sk;
-        // (float) $k13 = $s;
-        // (float) $k14 = $hs / $sh;
-        // (float) $k15 = $gs / $sg;
-        // (float) $k16 = $lh / $hl;
-        // (float) $k17 = $kh / $hk;
-        // (float) $k18 = $sh / $hs;
-        // (float) $k19 = $h;
-        // (float) $k20 = $gh / $hg;
-        // (float) $k21 = $lg / $gl;
-        // (float) $k22 = $kg / $gk;
-        // (float) $k23 = $sg / $gs;
-        // (float) $k24 = $hg / $gh;
-        // (float) $k25 = $g;
-        // (float) $k26 = $k1 + $k6 + $k11 + $k16 + $k21;
-        // (float) $k27 = $k2 + $k7 + $k12 + $k17 + $k22;
-        // (float) $k28 = $k3 + $k8 + $k13 + $k18 + $k23;
-        // (float) $k29 = $k4 + $k9 + $k14 + $k19 + $k24;
-        // (float) $k30 = $k5 + $k10 + $k15 + $k20 + $k25;
-
-        // return view('content.matrix1.matrix1', [
-        //     'k1' => $k1,
-        //     'k2' => $k2,
-        //     'k3' => $k3,
-        //     'k4' => $k4,
-        //     'k5' => $k5,
-        //     'k6' => $k6,
-        //     'k7' => $k7,
-        //     'k8' => $k8,
-        //     'k9' => $k9,
-        //     'k10' => $k10,
-        //     'k11' => $k11,
-        //     'k12' => $k12,
-        //     'k13' => $k13,
-        //     'k14' => $k14,
-        //     'k15' => $k15,
-        //     'k16' => $k16,
-        //     'k17' => $k17,
-        //     'k18' => $k18,
-        //     'k19' => $k19,
-        //     'k20' => $k20,
-        //     'k21' => $k21,
-        //     'k22' => $k22,
-        //     'k23' => $k23,
-        //     'k24' => $k24,
-        //     'k25' => $k25,
-        //     'k26' => $k26,
-        //     'k27' => $k27,
-        //     'k28' => $k28,
-        //     'k29' => $k29,
-        //     'k30' => $k30
-        // ]);
-
         // Ambil data comparison dari request
         $comparisonData = $request->input('comparison', []);
         // dd($request->all());
@@ -1260,7 +1168,8 @@ class AhpController extends Controller
         $products = $request->input('products');
 
         // Hitung Lambda Max (λmax) untuk konsistensi
-        $lambdaMax = $this->calculateLambdaMax($subCriteriaWeights);
+        // $lambdaMax = $this->calculateLambdaMax($subCriteriaWeights);
+        $lambdaMax = 1.0;
 
         // Hitung Consistency Index (CI)
         $n = count($criteriaWeights);
@@ -1307,45 +1216,88 @@ class AhpController extends Controller
         ]);
     }
 
-
-
-    // Fungsi untuk menghitung Lambda Max (λmax)
-    private function calculateLambdaMax($subCriteriaWeights)
+    public function getRecommendation(Request $request)
     {
-        // Contoh matriks perbandingan untuk kriteria
-        $comparisonMatrix = [
-            [1, 2, 3], // Harga
-            [0.5, 1, 2], // Garasi
-            [0.333, 0.5, 1], // Luas
-        ];
+        // Ambil data dari request
+        $criteriaWeights = $request->input('criteriaWeights'); // Bobot kriteria utama
+        $subCriteriaWeights = $request->input('subCriteriaWeights'); // Bobot sub-kriteria
+        $products = $request->input('products'); // Daftar produk
 
-        // Hitung lambda max (λmax)
-        $n = count($comparisonMatrix);
-        $eigenValues = []; // Hasil perkiraan nilai eigen
+        // Validasi data input
+        if (empty($criteriaWeights) || empty($subCriteriaWeights) || empty($products)) {
+            return response()->json(['error' => 'Invalid input data'], 400);
+        }
 
-        // Perhitungan untuk λmax bisa lebih kompleks tergantung algoritma yang digunakan
-        // Sebagai contoh, kita menggunakan hasil perhitungan manual atau dari matrix AHP
-        $lambdaMax = 5.1; // Contoh nilai λmax yang sudah dihitung (bisa didapat dengan metode AHP)
+        // Hitung Bobot Global
+        $globalWeights = [];
+        foreach ($subCriteriaWeights as $criteria => $subs) {
+            foreach ($subs as $subName => $subWeight) {
+                // Bobot global = bobot kriteria * bobot sub-kriteria
+                $globalWeights[$criteria][$subName] = $criteriaWeights[$criteria] * $subWeight;
+            }
+        }
 
+        // Hitung Nilai Produk
+        $productScores = [];
+        foreach ($products as $product) {
+            $score = 0;
+            foreach ($product['subCriteria'] as $criteria => $subName) {
+                // Periksa apakah ada bobot global untuk kriteria dan sub-kriteria
+                if (isset($globalWeights[$criteria][$subName])) {
+                    $score += $globalWeights[$criteria][$subName];
+                }
+            }
+            $productScores[] = [
+                'name' => $product['name'],
+                'score' => $score,
+            ];
+        }
+
+        // Urutkan berdasarkan skor
+        usort($productScores, function ($a, $b) {
+            return $b['score'] <=> $a['score'];
+        });
+
+        // Hitung Lambda Max (λmax), CI, dan CR untuk validasi konsistensi
+        $lambdaMax = $this->calculateLambdaMax($criteriaWeights, $subCriteriaWeights);
+        $n = count($criteriaWeights);
+        $ci = ($lambdaMax - $n) / ($n - 1);
+        $randomIndex = $this->getRandomIndex($n);
+        $cr = $randomIndex > 0 ? $ci / $randomIndex : 0;
+
+        // Return hasil rekomendasi dan validasi konsistensi
+        return response()->json([
+            'productScores' => $productScores,
+            'globalWeights' => $globalWeights,
+            'lambdaMax' => $lambdaMax,
+            'ci' => $ci,
+            'cr' => $cr,
+        ]);
+    }
+
+    // Fungsi untuk menghitung Lambda Max
+    private function calculateLambdaMax($criteriaWeights, $subCriteriaWeights)
+    {
+        $lambdaMax = 0;
+        foreach ($criteriaWeights as $criteria => $weight) {
+            if (isset($subCriteriaWeights[$criteria])) {
+                $subWeights = $subCriteriaWeights[$criteria];
+                foreach ($subWeights as $subName => $subWeight) {
+                    $lambdaMax += $weight * $subWeight;
+                }
+            }
+        }
         return $lambdaMax;
     }
 
-    // Fungsi untuk mendapatkan Random Index (RI) berdasarkan jumlah kriteria
+    // Fungsi untuk mendapatkan Random Index (RI)
     private function getRandomIndex($n)
     {
-        $randomIndices = [
-            1 => 0.0,
-            2 => 0.0,
-            3 => 0.58,
-            4 => 0.9,
-            5 => 1.12,
-            6 => 1.24,
-            7 => 1.32,
-            8 => 1.41,
-            9 => 1.45,
-            10 => 1.49,
+        $randomIndex = [
+            1 => 0.00, 2 => 0.00, 3 => 0.58, 4 => 0.90,
+            5 => 1.12, 6 => 1.24, 7 => 1.32, 8 => 1.41,
+            9 => 1.45, 10 => 1.49
         ];
-
-        return $randomIndices[$n] ?? 1.5; // Default RI value if n > 10
+        return $randomIndex[$n] ?? 1.49; // Default untuk n > 10
     }
 }

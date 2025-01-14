@@ -272,7 +272,6 @@
                 @endif
             </a>
           </th>
-          <th>Garansi</th>
           <th>Keterangan</th>
           <th>Gambar</th>
           <th>Action</th>
@@ -290,7 +289,6 @@
             <td>{{ $DR->watt }}</td>
             <td>{{ $DR->kapasitas }}</td>
             <td>{{ $DR->dayatahan }}</td>
-            <td>{{ $DR->garansi }}</td>
             <td>{{ Str::limit($DR->keterangan, 30, '') }}...</td>
             <td>
                 <img src="{{ url('/data_file/'.$DR->gambar) }}" alt="{{ $DR->gambar }}" style="width: 200px; height: 100px; object-fit: cover;">

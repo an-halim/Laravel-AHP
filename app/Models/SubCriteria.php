@@ -14,4 +14,9 @@ class SubCriteria extends Model
     {
         return $this->belongsTo(Criteria::class);
     }
+
+    public function getCriteriaNameAttribute()
+    {
+        return $this->criteria ? $this->criteria->name : null;
+    }
 }

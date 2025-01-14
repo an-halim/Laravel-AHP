@@ -20,7 +20,7 @@
         {{ session('error') }}
     </div>
 @endif
-<form method="POST" action="{{ route('postSubCriteria') }}">
+<form method="POST" action="{{ route('postSubCriterias') }}">
     @csrf
     <div class="card">
         @foreach ($subCriteria as $criteriaName => $subCrits)
