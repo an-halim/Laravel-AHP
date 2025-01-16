@@ -9,9 +9,9 @@ use App\Http\Controllers\Dashboard\HasilController;
 use App\Http\Controllers\Dashboard\AhpController;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\Dashboard\AlternativeController;
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\user\UserController;
 
 /*
 |--------------------------------------------------------------------------
