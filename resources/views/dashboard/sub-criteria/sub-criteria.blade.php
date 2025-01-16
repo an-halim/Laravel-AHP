@@ -203,6 +203,7 @@
                     <th>Nama Sub Criteria</th>
                     <th>Nilai Criteria</th>
                     <th>Bobot Criteria</th>
+                    <th>Operator</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -215,8 +216,9 @@
                             <td>{{ $criteria->code }}</td>
                             <td>{{ $criteria->criteria->name }}</td>
                             <td>{{ $criteria->name }}</td>
-                            <td>{{ $criteria->nilaik }}</td>
-                            <td>{{ $criteria->nilaib }}</td>
+                            <td>{{ $criteria->value }}</td>
+                            <td>{{ $criteria->weight }}</td>
+                            <td>{{ $criteria->operator }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>

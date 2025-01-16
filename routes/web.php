@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\CriteriaController;
-use App\Http\Controllers\Admin\SubCriteriaController;
-// use App\Http\Controllers\Admin\ComparisonsController;
-// use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\RumahController;
-use App\Http\Controllers\Admin\HasilController;
-use App\Http\Controllers\Admin\AhpController;
+use App\Http\Controllers\Dashboard\AdminController;
+use App\Http\Controllers\Dashboard\CriteriaController;
+use App\Http\Controllers\Dashboard\SubCriteriaController;
+// use App\Http\Controllers\Dashboard\ComparisonsController;
+// use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\RumahController;
+use App\Http\Controllers\Dashboard\HasilController;
+use App\Http\Controllers\Dashboard\AhpController;
 use App\Http\Controllers\AuthUser;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\Dashboard\AlternativeController;

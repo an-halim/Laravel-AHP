@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Alternative;
+use App\Models\Comparisons;
+use App\Models\Criteria;
+use App\Models\SubCriteria;
 use Illuminate\Database\Seeder;
 
 class AlternativeSeeder extends Seeder
@@ -192,7 +195,65 @@ class AlternativeSeeder extends Seeder
         ];
 
 
+        // Use insertGetId if handling individual rows, or insert and then fetch inserted IDs for batch processing
+        $insertedIds = [];
+        foreach ($data as $row) {
+            $insertedIds[] = Alternative::create($row)->id;
+        }
 
-        Alternative::insert($data);
+        // Process criteria values
+        $criteriaValues = [];
+        foreach ($data as $index => $row) {
+            $alternativeId = $insertedIds[$index]; // Map alternative ID to the respective data row
+            $criteriaValues = array_merge(
+                $criteriaValues,
+                $this->processCriteria($row, $alternativeId)
+            );
+        }
+
+        // Insert criteria values into the Comparisons table
+        Comparisons::insert($criteriaValues);
+    }
+
+    /**
+     * Process criteria and return an array of values to insert into the Comparisons table.
+     */
+    private function processCriteria(array $requestData, $alternativeId)
+    {
+        $criteriaValues = [];
+
+        foreach ($requestData as $key => $value) {
+            $criteria = Criteria::where('name', $key)->first();
+
+            if ($criteria) {
+                $subCriteriaId = $this->findMatchingSubCriteria($criteria->id, $value);
+
+                if ($subCriteriaId) {
+                    $criteriaValues[] = [
+                        'alternative_id' => $alternativeId,
+                        'sub_criteria_id' => $subCriteriaId,
+                    ];
+                }
+            }
+        }
+
+        return $criteriaValues;
+    }
+
+    /**
+     * Find the matching SubCriteria ID based on criteria and value.
+     */
+    private function findMatchingSubCriteria($criteriaId, $value)
+    {
+        return SubCriteria::where('criteria_id', $criteriaId)
+            ->where(function ($query) use ($value) {
+                $query->where(function ($subQuery) use ($value) {
+                    $subQuery->where('operator', '<=')->where('value', '<=', $value);
+                })->orWhere(function ($subQuery) use ($value) {
+                    $subQuery->where('operator', '>=')
+                        ->where('value', '>=', $value);
+                });
+            })
+            ->value('id') ?? null;
     }
 }
