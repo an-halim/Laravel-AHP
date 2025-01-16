@@ -1,20 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\CriteriaController;
 use App\Http\Controllers\Dashboard\SubCriteriaController;
 // use App\Http\Controllers\Dashboard\ComparisonsController;
 // use App\Http\Controllers\Dashboard\UserController;
-use App\Http\Controllers\Dashboard\RumahController;
 use App\Http\Controllers\Dashboard\HasilController;
 use App\Http\Controllers\Dashboard\AhpController;
-use App\Http\Controllers\AuthUser;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\Dashboard\AlternativeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RatingScaleController;
 use App\Http\Controllers\user\UserController;
 
 /*
@@ -85,11 +81,6 @@ Route::middleware('role:Admin')->group(function () {
     Route::post('/data-master/criteria', [CriteriaController::class, 'create'])->name('data-master-criteria');
     Route::put('/data-master/criteria/{id}', [CriteriaController::class, 'update'])->name('data-master-update-criteria');
     Route::delete('/data-master/criteria/{id}', [CriteriaController::class, 'delete'])->name('data-master-delete-criteria');
-
-    Route::get('/data-master/rating', [RatingScaleController::class, 'index'])->name('data-master-rating');
-    Route::post('/data-master/rating', [RatingScaleController::class, 'store'])->name('data-master-rating');
-    Route::put('/data-master/rating/{id}', [RatingScaleController::class, 'update'])->name('data-master-update-rating');
-    Route::delete('/data-master/rating/{id}', [RatingScaleController::class, 'destroy'])->name('data-master-delete-rating');
 
     Route::get('/data-master/sub-criteria', [SubCriteriaController::class, 'index'])->name('data-master-sub-criteria');
     Route::post('/data-master/sub-criteria', [SubCriteriaController::class, 'create'])->name('data-master-sub-criteria');

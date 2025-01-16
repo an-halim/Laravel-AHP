@@ -34,12 +34,6 @@
                     "permisson": "Admin"
                 },
                 {
-                    "url": "data-master/rating",
-                    "name": "Rating",
-                    "slug": "data-master-rating",
-                    "permisson": "Admin"
-                },
-                {
                     "url": "data-master/criteria",
                     "name": "Criteria",
                     "slug": "data-master-criteria",
