@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\dashboard;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alternative;
@@ -21,7 +21,7 @@ class Analytics extends Controller
         $alternativeCount = Alternative::all()->count();
         $subCriteriaCount = SubCriteria::all()->count();
 
-        return view('content.dashboard.dashboards-analytics', [
+        return view('dashboard.dashboard.dashboards-analytics', [
             'auth' => $auth,
             'users' => $users,
             'alternative' => $alternative,

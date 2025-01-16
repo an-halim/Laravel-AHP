@@ -15,11 +15,8 @@ class CreateComparisonsTable extends Migration
     {
         Schema::create('comparisons', function (Blueprint $table) {
             $table->id();
-            $table->string('model');
-            $table->string('harga');
-            $table->string('watt');
-            $table->string('kapasitas');
-            $table->string('dayatahan');
+            $table->foreignId('alternative_id')->constrained('alternatives')->onDelete('cascade');
+            $table->foreignId('sub_criteria_id')->constrained('sub_criterias')->onDelete('cascade');
             $table->timestamps();
         });
     }

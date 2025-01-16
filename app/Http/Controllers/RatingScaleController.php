@@ -15,7 +15,7 @@ class RatingScaleController extends Controller
     public function index()
     {
         $ratings = RatingScale::all();
-        return view('content.rating.rating', ['ratings' => $ratings]);
+        return view('dashboard.rating.rating', ['ratings' => $ratings]);
     }
 
     /**

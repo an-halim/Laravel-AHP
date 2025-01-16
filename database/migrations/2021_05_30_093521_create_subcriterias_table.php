@@ -18,8 +18,9 @@ class CreateSubcriteriasTable extends Migration
             $table->foreignId('criteria_id')->constrained('criterias')->onDelete('cascade');
             $table->string('code')->unique();
             $table->string('name');
-            $table->string('nilaik');
-            $table->string('nilaib');
+            $table->string('value');
+            $table->string('operator');
+            $table->double('weight');
             $table->timestamps();
         });
     }

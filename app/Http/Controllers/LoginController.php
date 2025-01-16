@@ -16,12 +16,12 @@ class LoginController extends Controller
         if (Auth::check()) {
             return redirect('/dashboard');
         }
-        return view('content.authentications.auth-login-basic');
+        return view('dashboard.authentications.auth-login-basic');
     }
 
     public function register()
     {
-        return view('content.authentications.auth-register-basic');
+        return view('dashboard.authentications.auth-register-basic');
     }
 
     public function doRegister(Request $request)
