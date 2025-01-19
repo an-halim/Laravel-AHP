@@ -38,30 +38,13 @@ Route::post('/register', [LoginController::class, 'doRegister'])->name('register
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard-analytics');
-    Route::get('/ahp/alternatif', [AhpController::class, 'tampilalternative'])->name('ahp-alternatif');
-    Route::get('/ahp/report', [HasilController::class, 'report'])->name('ahp-reports');
-    Route::get('/ahp/report/{id}', [HasilController::class, 'showReport'])->name('ahp-report');
-    Route::delete('/ahp/report/{id}', [HasilController::class, 'delete'])->name('ahp-report-delete');
-
-    Route::get('/detail/{tipe}', [HasilController::class, 'tampildetail']);
-
-    // Perhitungan AHP Admin
-    Route::get('/ahp/bobot', [AhpController::class, 'indexbobot'])->name('ahp-bobot');
-    Route::get('/ahp/bobot-sub', [AhpController::class, 'indexbobotsub'])->name('ahp-bobot-sub');
-    // Route::post('/ahp/bobot-sub', [AhpController::class, 'postSubCriteria'])->name('postSubCriteria');
-    Route::post('/ahp/bobot-sub', [AhpController::class, 'postSubCriterias'])->name('postSubCriterias');
-    Route::post('/ahp/bobot/postbobot', [AhpController::class, 'postbobot'])->name('postbobot');
-    // Route::post('/ahp/bobot/postmatriks', [AhpController::class, 'postmatriks'])->name('postmatriks');
-    Route::post('/ahp/bobot/postmatriks', [AhpController::class, 'postmatriksnew'])->name('postmatriks');
-    Route::post('/ahp/bobot/postmatriks2', [AhpController::class, 'postmatriks2new'])->name('postmatriks2');
-    // Route::post('/ahp/bobot/postmatriks2', [AhpController::class, 'postmatriks2'])->name('postmatriks2');
-    Route::post('/ahp/bobot/cekkonsistensi', [AhpController::class, 'cekkonsistensi'])->name('cekkonsistensi');
-    Route::post('/ahp/bobot/posthasilrekomendasi', [AhpController::class, 'posthasilrekomendasi'])->name('posthasilrekomendasi');
-    Route::get('/ahp/bobot/kesimpulan/{tipe}', [HasilController::class, 'tampilkesimpulan']);
-
-    // Cetak PDF
-    Route::get('/ahp/bobot/kesimpulan/cetak/{tipe}', [HasilController::class, 'cetakpdf']);
-
+    Route::get('/ahp/alternatif', [AhpController::class, 'alternatives'])->name('ahp.alternatives');
+    Route::get('/ahp/bobot', [AhpController::class, 'ahpCompareCriteria'])->name('ahp.compare-criteria');
+    Route::post('/ahp/bobot', [AhpController::class, 'calculateAHP'])->name('ahp.calculate');
+    Route::post('/ahp/recomendation', [AhpController::class, 'getRecommendation'])->name('ahp.recommendation');
+    Route::get('/ahp/report', [HasilController::class, 'reports'])->name('ahp.reports');
+    Route::get('/ahp/report/{id}', [HasilController::class, 'showReport'])->name('ahp.report');
+    Route::delete('/ahp/report/{id}', [HasilController::class, 'delete'])->name('ahp.delete');
 
     // Modal Reset Password
     Route::get('/profil/reset', [Home::class, 'tampilmodal']);
@@ -69,21 +52,21 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('role:Admin')->group(function () {
-    Route::get('/data-master/user', [UserController::class, 'index'])->name('data-master-user');
-    Route::post('/data-master/user', [UserController::class, 'create'])->name('create-user');
-    Route::put('/data-master/user/{id}', [UserController::class, 'update'])->name('update-user');
-    Route::delete('/data-master/user/{id}', [UserController::class, 'delete'])->name('delete-user');
+    Route::get('/data-master/user', [UserController::class, 'index'])->name('data-master.users.index');
+    Route::post('/data-master/user', [UserController::class, 'create'])->name('data-master.users.create');
+    Route::put('/data-master/user/{id}', [UserController::class, 'update'])->name('data-master.users.update');
+    Route::delete('/data-master/user/{id}', [UserController::class, 'delete'])->name('data-master.users.delete');
 
-    Route::get('/data-master/alternatif', [AlternativeController::class, 'index'])->name('data-master-alternatif');
-    Route::post('/data-master/alternatif', [AlternativeController::class, 'create'])->name('data-master-alternatif');
+    Route::get('/data-master/alternatif', [AlternativeController::class, 'index'])->name('data-master.alternatives.index');
+    Route::post('/data-master/alternatif', [AlternativeController::class, 'create'])->name('data-master.alternatives.create');
 
-    Route::get('/data-master/criteria', [CriteriaController::class, 'index'])->name('data-master-criteria');
-    Route::post('/data-master/criteria', [CriteriaController::class, 'create'])->name('data-master-criteria');
-    Route::put('/data-master/criteria/{id}', [CriteriaController::class, 'update'])->name('data-master-update-criteria');
-    Route::delete('/data-master/criteria/{id}', [CriteriaController::class, 'delete'])->name('data-master-delete-criteria');
+    Route::get('/data-master/criteria', [CriteriaController::class, 'index'])->name('data-master.criterias.index');
+    Route::post('/data-master/criteria', [CriteriaController::class, 'create'])->name('data-master.criterias.create');
+    Route::put('/data-master/criteria/{id}', [CriteriaController::class, 'update'])->name('data-master.criterias.update');
+    Route::delete('/data-master/criteria/{id}', [CriteriaController::class, 'delete'])->name('data-master.criterias.delete');
 
-    Route::get('/data-master/sub-criteria', [SubCriteriaController::class, 'index'])->name('data-master-sub-criteria');
-    Route::post('/data-master/sub-criteria', [SubCriteriaController::class, 'create'])->name('data-master-sub-criteria');
-    Route::put('/data-master/sub-criteria/{id}', [SubCriteriaController::class, 'update'])->name('data-master-update-sub-criteria');
-    Route::delete('/data-master/sub-criteria/{id}', [SubCriteriaController::class, 'delete'])->name('data-master-delete-sub-criteria');
+    Route::get('/data-master/sub-criteria', [SubCriteriaController::class, 'index'])->name('data-master.subcriterias.index');
+    Route::post('/data-master/sub-criteria', [SubCriteriaController::class, 'create'])->name('data-master.subcriterias.create');
+    Route::put('/data-master/sub-criteria/{id}', [SubCriteriaController::class, 'update'])->name('data-master.subcriterias.update');
+    Route::delete('/data-master/sub-criteria/{id}', [SubCriteriaController::class, 'delete'])->name('data-master-subcriterias.delete');
 });

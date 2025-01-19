@@ -27,7 +27,7 @@ class AlternativeController extends Controller
         $sortDirection = $request->input('sort_direction', 'asc'); // Default direction
 
         // Validate sorting inputs
-        $allowedSorts = ['nama', 'model', 'harga', 'dayatahan', 'watt', 'kapasitas', 'garansi']; // Add other sortable columns
+        $allowedSorts = ['nama', 'model', 'harga', 'garansi', 'watt', 'kapasitas', 'garansi']; // Add other sortable columns
         if (in_array($sortBy, $allowedSorts) && in_array($sortDirection, ['asc', 'desc'])) {
             $query->orderBy($sortBy, $sortDirection);
         }
@@ -47,7 +47,7 @@ class AlternativeController extends Controller
             'nama' => 'required',
             'harga' => 'required',
             'kapasitas' => 'required',
-            'dayatahan' => 'required',
+            'garansi' => 'required',
             'keterangan' => 'required',
             'gambar' => 'required',
         ]);
@@ -76,7 +76,7 @@ class AlternativeController extends Controller
             'nama' => $request->nama,
             'harga' => $request->harga,
             'kapasitas' => $request->kapasitas,
-            'dayatahan' => $request->dayatahan,
+            'garansi' => $request->garansi,
             'keterangan' => $request->keterangan,
             'gambar' => $nama_file,
         ]);
@@ -92,7 +92,7 @@ class AlternativeController extends Controller
             'nama' => $request->nama,
             'harga' => $request->harga,
             'kapasitas' => $request->kapasitas,
-            'dayatahan' => $request->dayatahan,
+            'garansi' => $request->garansi,
             'keterangan' => $request->keterangan,
             'gambar' => $nama_file,
         ]);
@@ -157,7 +157,7 @@ class AlternativeController extends Controller
 
             Comparisons::insert($criteriaValues);
 
-            return redirect()->route('data-master-alternatif');
+            return redirect()->route('data-master.alternatives.index');
         }
     }
 
@@ -186,7 +186,7 @@ class AlternativeController extends Controller
             Comparisons::where('alternative_id', $request->id)->delete();
             Comparisons::insert($criteriaValues);
 
-            return redirect()->route('data-master-alternatif');
+            return redirect()->route('data-master.alternatives.index');
         }
     }
 

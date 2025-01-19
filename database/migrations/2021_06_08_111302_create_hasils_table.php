@@ -20,7 +20,7 @@ class CreateHasilsTable extends Migration
             $table->string('harga');
             $table->string('watt');
             $table->string('kapasitas');
-            $table->string('dayatahan');
+            $table->string('garansi');
             $table->string('gambar');
             $table->float('ahp');
             $table->timestamps();

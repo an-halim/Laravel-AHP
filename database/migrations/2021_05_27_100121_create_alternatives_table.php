@@ -20,7 +20,7 @@ class CreateAlternativesTable extends Migration
             $table->decimal('harga',  10, 2);
             $table->integer('watt');
             $table->float('kapasitas', 8, 2);
-            $table->string('dayatahan')->nullable();
+            $table->string('garansi')->nullable();
             $table->string('keterangan')->nullable();
             $table->string('gambar')->nullable();
             $table->timestamps();

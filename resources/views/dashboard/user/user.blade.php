@@ -45,7 +45,7 @@
   <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="{{ route('create-user') }}" method="post">
+        <form action="{{ route('data-master.users.create') }}" method="post">
          @csrf
             <div class="modal-header">
             <h5 class="modal-title" id="modalCenterTitle">Tambah User</h5>

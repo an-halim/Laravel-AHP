@@ -47,7 +47,7 @@
 <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="{{ route('data-master-alternatif') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('data-master.alternatives.create') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-header">
             <h5 class="modal-title" id="modalCenterTitle">Tambah Rice Cooker</h5>
@@ -86,8 +86,8 @@
                 <input type="text" id="kapasitas" name="kapasitas" class="form-control" placeholder="Enter kapasitas">
                 </div>
                 <div class="col mb-0">
-                <label for="dayatahan" class="form-label">Daya Tahan</label>
-                <input type="text" id="dayatahan" name="dayatahan" class="form-control" placeholder="Enter Daya Tahan">
+                <label for="garansi" class="form-label">garansi</label>
+                <input type="text" id="garansi" name="garansi" class="form-control" placeholder="Enter garansi">
                 </div>
             </div>
             <div class="row">
@@ -261,9 +261,9 @@
             </a>
           </th>
           <th>
-            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'dayatahan', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'dayatahan' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
-                Daya Tahan (tahun)
-                @if(request('sort_by') === 'dayatahan')
+            <a href="{{ request()->fullUrlWithQuery(['sort_by' => 'garansi', 'sort_direction' => request('sort_direction') === 'asc' && request('sort_by') === 'garansi' ? 'desc' : 'asc']) }}" class="d-flex align-items-center gap-1">
+                garansi (tahun)
+                @if(request('sort_by') === 'garansi')
                     @if(request('sort_direction') === 'asc')
                         <i class="bx bx-chevron-up"></i>
                     @else
@@ -288,7 +288,7 @@
             <td>{{ $DR->harga }}</td>
             <td>{{ $DR->watt }}</td>
             <td>{{ $DR->kapasitas }}</td>
-            <td>{{ $DR->dayatahan }}</td>
+            <td>{{ $DR->garansi }}</td>
             <td>{{ Str::limit($DR->keterangan, 30, '') }}...</td>
             <td>
                 <img src="{{ url('/data_file/'.$DR->gambar) }}" alt="{{ $DR->gambar }}" style="width: 200px; height: 100px; object-fit: cover;">

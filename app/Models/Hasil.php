@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Hasil extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_result_id', 'model', 'nama', 'harga', 'watt', 'kapasitas', 'dayatahan', 'gambar', 'ahp'];
+    protected $fillable = ['user_result_id', 'model', 'nama', 'harga', 'watt', 'kapasitas', 'garansi', 'gambar', 'ahp'];
     protected $dates = ['deleted_at'];
 
     public function userResult()

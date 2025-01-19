@@ -24,7 +24,7 @@ class CriteriaSeeder extends Seeder
         ]);
         Criteria::create([
             'code' => 'C3',
-            'name' => 'DAYA TAHAN'
+            'name' => 'GARANSI'
         ]);
         Criteria::create([
             'code' => 'C4',

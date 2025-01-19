@@ -24,25 +24,25 @@
                 {
                     "url": "data-master/user",
                     "name": "User",
-                    "slug": "data-master-user",
+                    "slug": "data-master.users.index",
                     "permisson": "Admin"
                 },
                 {
                     "url": "data-master/alternatif",
                     "name": "Data Alternatif",
-                    "slug": "data-master-alternatif",
+                    "slug": "data-master.alternatives.index",
                     "permisson": "Admin"
                 },
                 {
                     "url": "data-master/criteria",
                     "name": "Criteria",
-                    "slug": "data-master-criteria",
+                    "slug": "data-master.criterias.index",
                     "permisson": "Admin"
                 },
                 {
                     "url": "data-master/sub-criteria",
                     "name": "Sub Criteria",
-                    "slug": "data-master-sub-criteria",
+                    "slug": "data-master-subcriterias.index",
                     "permisson": "Admin"
                 }
             ]
@@ -56,19 +56,19 @@
                 {
                     "url": "ahp/alternatif",
                     "name": "Data Alternatif",
-                    "slug": "ahp-alternatif",
+                    "slug": "ahp.alternatives",
                     "permisson": "Admin,user,Customer"
                 },
                 {
                     "url": "/ahp/bobot",
                     "name": "Perhitungan Bobot",
-                    "slug": "ahp-bobot",
+                    "slug": "ahp.compare-criteria",
                     "permisson": "Admin,user,Customer"
                 },
                 {
                     "url": "ahp/report",
                     "name": "Laporan Perhitungan",
-                    "slug": "ahp-reports",
+                    "slug": "ahp.reports",
                     "permisson": "Admin,user,Customer"
                 }
             ]

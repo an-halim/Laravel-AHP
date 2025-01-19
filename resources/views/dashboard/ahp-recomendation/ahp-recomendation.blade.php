@@ -8,6 +8,8 @@
     <span class="text-muted fw-light">AHP /</span> Alternatif
 </h4>
 
+
+
 <!-- Responsive Table -->
 <div class="card">
   <h5 class="card-header d-flex justify-content-between align-items-center">
@@ -19,6 +21,7 @@
       <thead>
         <tr class="text-nowrap">
           <th>#</th>
+          <th>Score AHP</th>
           <th>Model</th>
           <th>Nama</th>
           <th>Harga</th>
@@ -31,13 +34,20 @@
       </thead>
       <tbody class="table-border-bottom-0">
         <?php $no = 1; ?>
-        @if($alternatives->count() > 0)
-        @foreach($alternatives as $alternative)
+        @if($results->count() > 0)
+        @foreach($results as $alternative)
         <tr>
             <th scope="row">
-                <?php
-                echo $no++;
-                ?></th>
+                @if ($no === 1)
+                ⭐ Rekomendasi Utama
+                @php
+                    $no++;
+                @endphp
+                @else
+                    {{ $no++ }}
+                @endif
+            </th>
+            <td>{{ $alternative->ahp }}</td>
             <td>{{ $alternative->model }}</td>
             <td>{{ $alternative->nama }}</td>
             <td>{{ $alternative->harga }}</td>

@@ -68,7 +68,7 @@
 <div class="card">
     <h5 class="card-header d-flex justify-content-between align-items-center">
         Data Uji AHP
-       <a type="button" class="btn btn-primary" href="{{ route('ahp-bobot') }}" >+ Tambah report</a>
+       <a type="button" class="btn btn-primary" href="{{ route('ahp.compare-criteria') }}" >+ Tambah report</a>
     </h5>
   <div class="table-responsive text-nowrap">
     <table class="table">
@@ -87,7 +87,7 @@
         <?php $no = 1; ?>
         @if($reports->count() > 0)
         @foreach($reports as $report)
-        <tr onclick="window.location='{{ route('ahp-report', ['id' => $report->id]) }}';" class="cursor-pointer">
+        <tr onclick="window.location='{{ route('ahp.report', ['id' => $report->id]) }}';" class="cursor-pointer">
             <th scope="row">
                 <?php
                 echo $no++;
@@ -101,7 +101,7 @@
                 <div class="dropdown">
                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ route('ahp-report', ['id' => $report->id]) }}">
+                    <a class="dropdown-item" href="{{ route('ahp.report', ['id' => $report->id]) }}">
                         <i class="bx bx-edit-alt me-1"></i> View
                     </a>
                     <a class="dropdown-item" href="javascript:void(0)" onclick="openDeleteModal({{ $report->id }})">

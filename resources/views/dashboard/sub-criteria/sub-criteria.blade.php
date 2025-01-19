@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Tables - Basic Tables')
+@section('title', 'Data Master - Sub Criteria')
 
 @section('page-script')
 <script src="{{asset('assets/js/ui-modals.js')}}"></script>
@@ -48,7 +48,7 @@
 <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="{{ route('data-master-sub-criteria') }}" method="post">
+        <form action="{{ route('data-master.subcriterias.create') }}" method="post">
          @csrf
             <div class="modal-header">
             <h5 class="modal-title" id="modalCenterTitle">Tambah Sub Criteria</h5>

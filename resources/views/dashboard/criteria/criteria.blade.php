@@ -46,7 +46,7 @@
 <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="{{ route('data-master-criteria') }}" method="post">
+        <form action="{{ route('data-master.criterias.create') }}" method="post">
          @csrf
             <div class="modal-header">
             <h5 class="modal-title" id="modalCenterTitle">Tambah Criteria</h5>
@@ -56,13 +56,13 @@
             <div class="row">
                 <div class="col mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
+                <input required type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
                 </div>
             </div>
             <div class="row">
                 <div class="col mb-3">
                 <label for="email" class="form-label">Code Criteria</label>
-                <input type="text" id="code" name="code" class="form-control" placeholder="Enter Critaria Code">
+                <input required type="text" id="code" name="code" class="form-control" placeholder="Enter Critaria Code">
                 </div>
             </div>
             </div>

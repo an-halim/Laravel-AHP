@@ -35,7 +35,7 @@ class HasilController extends Controller
         ]);
     }
 
-    public function report()
+    public function reports()
     {
         $user = auth()->user();
         // mengambil data dari table user result
@@ -48,21 +48,14 @@ class HasilController extends Controller
     public function showReport($id)
     {
         // mengambil data dari table daftar rumah
-        $data_rumah = Hasil::where('user_result_id', $id);
+        $result = Hasil::where('user_result_id', $id);
 
-        $datahasil = $data_rumah
+        $results = $result
             ->orderBy('ahp', 'desc')
             ->get();
 
-        $datamax = $data_rumah
-            ->orderBy('ahp', 'desc')
-            ->limit(1)
-            ->first(); // Using `first()` instead of `get()` to fetch a single result
-
         // mengirim data rumah ke view daftar rumah
-        return view('dashboard.result.result', [
-            'results' => $datahasil
-        ]);
+        return view('dashboard.ahp-recomendation.ahp-recomendation', compact('results'));
     }
 
     public function cetakpdf($tipe)
