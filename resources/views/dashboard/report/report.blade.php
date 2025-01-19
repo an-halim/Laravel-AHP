@@ -76,7 +76,7 @@
         <tr>
           <th>#</th>
           <th>ID report</th>
-          @if (Auth::user()->role == 'Admin')
+          @if (strtoupper(Auth::user()->role) == 'ADMIN')
             <th>Created By</th>
           @endif
           <th>Tanggal uji AHP</th>
@@ -93,7 +93,7 @@
                 echo $no++;
                 ?></th>
             <td>{{ $report->id }}</td>
-            @if (Auth::user()->role == 'Admin')
+            @if (strtoupper(Auth::user()->role) == 'ADMIN')
                 <td>{{ $report->user->name }}</td>
             @endif
             <td>{{ $report->created_at }}</td>
