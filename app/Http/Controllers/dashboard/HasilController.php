@@ -8,6 +8,7 @@ use App\Models\Comparisons;
 use App\Models\Hasil;
 use App\Models\SubCriteria;
 use App\Models\User;
+use App\Models\UserResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,11 +39,14 @@ class HasilController extends Controller
     public function reports()
     {
         $user = auth()->user();
-        // mengambil data dari table user result
-        $reports = $user->getResultLogged;
 
-        // mengirim report ke view report
-        return view('dashboard.report.report', compact('reports'));
+        if (strtolower($user->role) == 'admin') {
+            $reports = UserResult::all();
+            return view('dashboard.report.report', compact('reports'));
+        } else {
+            $reports = UserResult::where('user_id', $user->id);
+            return view('dashboard.report.report', compact('reports'));
+        }
     }
 
     public function showReport($id)

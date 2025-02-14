@@ -59,9 +59,22 @@ class User extends Authenticatable
         return $this->hasMany(UserResult::class);
     }
 
-    // get user by logged in user
+    public function is_admin()
+    {
+        return $this->role === 'Admin' || $this->role === 'admin';
+    }
+
+    /**
+     * Get the user result that owns the user.
+     */
     public function getResultLogged()
     {
-        return $this->hasMany(UserResult::class)->where('user_id', auth()->user()->id);
+        if (strtolower(auth()->user()->role) == "admin") {
+            // Return all results if the user is an admin
+            return $this->hasMany(UserResult::class);
+        } else {
+            // Return only results for the logged-in user
+            return $this->hasMany(UserResult::class)->where('user_id', auth()->user()->id);
+        }
     }
 }

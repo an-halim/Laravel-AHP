@@ -59,6 +59,8 @@ Route::middleware('role:Admin')->group(function () {
 
     Route::get('/data-master/alternatif', [AlternativeController::class, 'index'])->name('data-master.alternatives.index');
     Route::post('/data-master/alternatif', [AlternativeController::class, 'create'])->name('data-master.alternatives.create');
+    Route::put('/data-master/alternatif/{id}', [AlternativeController::class, 'update'])->name('data-master.alternatives.update');
+    Route::delete('/data-master/alternatif/{id}', [AlternativeController::class, 'delete'])->name('data-master.alternatives.delete');
 
     Route::get('/data-master/criteria', [CriteriaController::class, 'index'])->name('data-master.criterias.index');
     Route::post('/data-master/criteria', [CriteriaController::class, 'create'])->name('data-master.criterias.create');

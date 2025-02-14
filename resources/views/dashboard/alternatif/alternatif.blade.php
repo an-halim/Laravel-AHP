@@ -14,7 +14,7 @@
     function openDeleteModal(userId) {
         // Set the action URL for the form to delete the specific user
         const form = document.getElementById('deleteForm');
-        form.action = '/data-master/user/' + userId;
+        form.action = '/data-master/alternatif/' + userId;
 
         // Show the modal
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -85,15 +85,11 @@
                 <label for="kapasitas" class="form-label">Kapasitas</label>
                 <input type="text" id="kapasitas" name="kapasitas" class="form-control" placeholder="Enter kapasitas">
                 </div>
-                <div class="col mb-0">
-                <label for="garansi" class="form-label">garansi</label>
-                <input type="text" id="garansi" name="garansi" class="form-control" placeholder="Enter garansi">
-                </div>
             </div>
             <div class="row">
                 <div class="col mb-3">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter your description here"></textarea>
+                <label for="keterangan">Keterangan</label>
+                <textarea class="form-control" id="keterangan" name="keterangan" rows="4" placeholder="Enter your description here"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -300,7 +296,7 @@
                     <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal" >
                         <i class="bx bx-edit-alt me-1"></i> Edit
                     </a>
-                    <a class="dropdown-item" href="javascript:void(0)">
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="openDeleteModal({{ $DR->id }})">
                         <i class="bx bx-trash me-1"></i> Delete
                     </a>
                 </div>

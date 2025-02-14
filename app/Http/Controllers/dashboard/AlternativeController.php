@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alternative;
+use App\Models\Comparisons;
+use App\Models\Criteria;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -48,6 +50,7 @@ class AlternativeController extends Controller
             'harga' => 'required',
             'kapasitas' => 'required',
             'garansi' => 'required',
+            'watt' => 'required',
             'keterangan' => 'required',
             'gambar' => 'required',
         ]);
@@ -77,6 +80,7 @@ class AlternativeController extends Controller
             'harga' => $request->harga,
             'kapasitas' => $request->kapasitas,
             'garansi' => $request->garansi,
+            'watt' => $request->watt,
             'keterangan' => $request->keterangan,
             'gambar' => $nama_file,
         ]);
