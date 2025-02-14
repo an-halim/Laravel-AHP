@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Alternative;
 use App\Models\Criteria;
+use App\Models\Hasil;
 use App\Models\SubCriteria;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,6 +21,8 @@ class Analytics extends Controller
         $criteriaCount = Criteria::all()->count();
         $alternativeCount = Alternative::all()->count();
         $subCriteriaCount = SubCriteria::all()->count();
+        $resultPercentage = Hasil::getPercentageIncrease();
+        $topRiceCooker = Hasil::getTop5ByAhpScore();
 
         return view('dashboard.dashboard.dashboards-analytics', [
             'auth' => $auth,
@@ -28,7 +31,9 @@ class Analytics extends Controller
             'userCount' => $userCount,
             'criteriaCount' => $criteriaCount,
             'alternativeCount' => $alternativeCount,
-            'subCriteriaCount' => $subCriteriaCount
+            'subCriteriaCount' => $subCriteriaCount,
+            'resultPercentage' => $resultPercentage,
+            'topRiceCooker' => $topRiceCooker,
         ]);
     }
 }
