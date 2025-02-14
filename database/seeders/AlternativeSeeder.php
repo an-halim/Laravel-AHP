@@ -198,7 +198,9 @@ class AlternativeSeeder extends Seeder
         // Use insertGetId if handling individual rows, or insert and then fetch inserted IDs for batch processing
         $insertedIds = [];
         foreach ($data as $row) {
-            $insertedIds[] = Alternative::create($row)->id;
+            $alternative = Alternative::create($row);
+            $alternative->update(['gambar' => $row['nama'] . "_" . $row['model'] . ".jpg"]);
+            $insertedIds[] = $alternative->id;
         }
 
         // Process criteria values
