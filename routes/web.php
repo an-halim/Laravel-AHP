@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard-analytics');
     Route::get('/ahp/alternatif', [AhpController::class, 'alternatives'])->name('ahp.alternatives');
     Route::get('/ahp/bobot', [AhpController::class, 'ahpCompareCriteria'])->name('ahp.compare-criteria');
+    Route::get('/ahp/bobot-sub', [AhpController::class, 'ahpCompareSubCriteria'])->name('ahp.compare-subcriteria');
     Route::post('/ahp/bobot', [AhpController::class, 'calculateAHP'])->name('ahp.calculate');
     Route::post('/ahp/recomendation', [AhpController::class, 'getRecommendation'])->name('ahp.recommendation');
     Route::get('/ahp/report', [HasilController::class, 'reports'])->name('ahp.reports');

@@ -52,7 +52,7 @@
          </tbody>
       </table>
       <h6 class="card-header d-flex justify-content-between align-items-center">
-         Normalisasi Matriks
+         Normalisasi Matriks & Bobot Prioritas
       </h6>
       <table class="table table-bordered">
          <thead>
@@ -61,29 +61,63 @@
                @foreach (array_keys($criteriaResult->normalizedMatrix) as $col)
                <th>{{ $col }}</th>
                @endforeach
+               <th>Bobot Prioritas</th>
             </tr>
          </thead>
          <tbody>
             @foreach ($criteriaResult->normalizedMatrix as $row => $values)
             <tr>
-               <td>{{ $row }}</td>
+               <td>{{ $row}}</td>
                @foreach ($values as $value)
                <td>{{ number_format($value, 4) }}</td>
                @endforeach
+                <td>{{ number_format($criteriaResult->priorityVector[$row], 4) }}</td>
             </tr>
             @endforeach
+            {{-- sum on each column --}}
          </tbody>
       </table>
+
       <h6 class="card-header d-flex justify-content-between align-items-center">
-         Priority Vector
+        Mencari konsistensi Matrix
+     </h6>
+     <table class="table table-bordered">
+        <thead>
+           <tr>
+              <th></th>
+              @foreach (array_keys($criteriaResult->weightedSumMatrix) as $col)
+              <th>{{ $col }}</th>
+              @endforeach
+              <th>CM</th>
+           </tr>
+        </thead>
+        <tbody>
+           @foreach ($criteriaResult->weightedSumMatrix as $row => $values)
+           <tr>
+              <td>{{ $row}}</td>
+              @foreach ($values as $value)
+              <td>{{ number_format($value, 4) }}</td>
+              @endforeach
+               <td>{{ number_format($criteriaResult->weightedSumVector[$row], 4) }}</td>
+           </tr>
+           @endforeach
+           {{-- sum on each column --}}
+        </tbody>
+     </table>
+
+      <h6 class="card-header d-flex justify-content-between align-items-center">
+        Consistency Check
       </h6>
       <ul>
-         @foreach ($criteriaResult->priorityVector as $key => $value)
-         <li>{{ $key }}: {{ number_format($value, 4) }}</li>
-         @endforeach
          <li>Lambda Max: {{ $criteriaResult->lambdaMax }}</li>
          <li>CI: {{ $criteriaResult->ci }}</li>
          <li>CR: {{ $criteriaResult->cr }}</li>
+         {{-- status consitensi --}}
+        @if ($criteriaResult->cr < 0.1)
+        <li class="badge bg-success">Consistent</li>
+        @else
+        <li class="badge bg-danger">Inconsistent</li>
+        @endif
       </ul>
    </div>
    <div class="card">
@@ -115,7 +149,7 @@
          </tbody>
       </table>
       <h6 class="card-header d-flex justify-content-between align-items-center">
-         Normalisasi Matriks
+         Normalisasi Matriks & Bobot Prioritas
       </h6>
       <table class="table table-bordered">
          <thead>
@@ -124,6 +158,7 @@
                @foreach (array_keys($result['normalizedMatrix']) as $col)
                <th>{{ $col }}</th>
                @endforeach
+               <th>Bobot Prioritas</th>
             </tr>
          </thead>
          <tbody>
@@ -133,6 +168,7 @@
                @foreach ($values as $value)
                <td>{{ number_format($value, 4) }}</td>
                @endforeach
+               <td>{{ number_format($result['priorityVector'][$row], 4) }}</td>
             </tr>
             @endforeach
          </tbody>

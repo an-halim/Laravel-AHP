@@ -24,38 +24,6 @@
     @csrf
     {{-- <input type="hidden" name="weightedMatrix" value="{{ json_encode($weightedMatrix) }}"> --}}
     <div class="card">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nama Kriteria 1</th>
-                    <th>Nilai Banding</th>
-                    <th>Nama Kriteria 2</th>
-                </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-                @foreach ($criteria as $index1 => $crit1)
-                    @foreach ($criteria as $index2 => $crit2)
-                        @if ($index1 < $index2) {{-- Avoid duplicates and self-comparison --}}
-                            <tr>
-                                <td>{{ $crit1->name }}</td> <!-- Display the criteria name (key) -->
-                                <td>
-                                    <select class="form-control" name="comparison[{{ $crit1->name }}][{{ $crit2->name }}]">
-                                        <option value="1" selected>{{ $crit1->name }} Sama Penting {{ $crit2->name }} (Nilai = 1)</option>
-                                        <option value="3">{{ $crit1->name }} Sedikit Lebih Penting {{ $crit2->name }} (Nilai = 3)</option>
-                                        <option value="5">{{ $crit1->name }} Lebih Penting {{ $crit2->name }} (Nilai = 5)</option>
-                                        <option value="7">{{ $crit1->name }} Sangat Penting {{ $crit2->name }} (Nilai = 7)</option>
-                                        <option value="9">{{ $crit1->name }} Mutlak Penting {{ $crit2->name }} (Nilai = 9)</option>
-                                    </select>
-                                </td>
-                                <td>{{ $crit2->name }}</td> <!-- Display the comparison criteria (key) -->
-                            </tr>
-                        @endif
-                    @endforeach
-                @endforeach
-            </tbody>
-
-
-        </table>
         @foreach ($subCriteria as $criteriaName => $subCrits)
             <h5 class="card-header d-flex justify-content-between align-items-center">
                 Sub-Kriteria untuk {{ $criteriaName }}
@@ -76,11 +44,9 @@
                                     <td>{{ $sub1 }}</td>
                                     <td>
                                         <select class="form-control" name="subComparison[{{ $criteriaName }}][{{ $sub1 }}][{{ $sub2 }}]">
-                                            <option value="1" selected>{{ $sub1  }} Sama Penting {{ $sub2  }} (Nilai = 1)</option>
-                                            <option value="3">{{ $sub1  }} Sedikit Lebih Penting {{ $sub2  }} (Nilai = 3)</option>
-                                            <option value="5">{{ $sub1  }} Lebih Penting {{ $sub2  }} (Nilai = 5)</option>
-                                            <option value="7">{{ $sub1  }} Sangat Penting {{ $sub2  }} (Nilai = 7)</option>
-                                            <option value="9">{{ $sub1  }} Mutlak Penting {{ $sub2  }} (Nilai = 9)</option>
+                                            <option value="1" selected>{{ $sub1 }} Sama Penting dengan {{ $sub2 }} (Nilai = 1)</option>
+                                            <option value="2">{{ $sub1 }} Lebih Penting daripada {{ $sub2 }} (Nilai = 2)</option>
+                                            <option value="3">{{ $sub1 }} Sangat Penting daripada {{ $sub2 }} (Nilai = 3)</option>
                                         </select>
                                     </td>
                                     <td>{{ $sub2 }}</td>
