@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubCriteria extends Model
 {
-    protected $fillable = ['code', 'criteria_id', 'name', 'value', 'operator', 'weight'];
+    protected $fillable = ['code', 'criteria_id', 'name'];
     protected $dates = ['deleted_at'];
 
     public function criteria()

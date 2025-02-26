@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Hasil extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_result_id', 'model', 'nama', 'harga', 'watt', 'kapasitas', 'garansi', 'gambar', 'ahp'];
+    protected $fillable = ['user_result_id', 'alternative_id', 'nama', 'model', 'ahp'];
     protected $dates = ['deleted_at'];
+
 
     public function userResult()
     {
@@ -51,5 +52,25 @@ class Hasil extends Model
             ->limit(5) // Limit to top 5 results
             ->get('model')
             ->toArray();
+    }
+
+    public static function getAlternativeByModelAndUserResultId($userResultId, $size = 6)
+    {
+        return self::where('user_result_id', $userResultId)
+            ->join('alternatives', 'hasils.alternative_id', '=', 'alternatives.id')
+            ->orderBy('hasils.ahp', 'desc')
+            ->select([
+                'alternatives.model',
+                'alternatives.nama',
+                'alternatives.harga',
+                'alternatives.watt',
+                'alternatives.kapasitas',
+                'alternatives.garansi',
+                'alternatives.keterangan',
+                'alternatives.gambar',
+                'hasils.user_result_id',
+                'hasils.alternative_id',
+                'hasils.ahp'
+            ])->paginate($size);
     }
 }

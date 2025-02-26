@@ -52,11 +52,7 @@ class HasilController extends Controller
     public function showReport($id)
     {
         // mengambil data dari table daftar rumah
-        $result = Hasil::where('user_result_id', $id);
-
-        $results = $result
-            ->orderBy('ahp', 'desc')
-            ->get();
+        $results = Hasil::getAlternativeByModelAndUserResultId($id);
 
         // mengirim data rumah ke view daftar rumah
         return view('dashboard.ahp-recomendation.ahp-recomendation', compact('results'));

@@ -120,7 +120,12 @@
                     <td>{{ $DR->harga }}</td>
                     <td>
                         <div class="image-wrapper">
-                            <img src="{{ url('/data_file/'.$DR->gambar) }}" alt="{{ $DR->gambar }}" class="img-fluid rounded shadow-sm" style="max-width: 200px; max-height: 100px; object-fit: cover;">
+                            <img
+                            src="{{ url('/data_file/'.$DR->gambar) }}"
+                            alt="{{ $DR->gambar }}"
+                            class="img-fluid rounded shadow-sm"
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x300?text=No+Image';"
+                            style="width: 200px; height: 100px; object-fit: cover;">
                         </div>
                     </td>
                 </tr>

@@ -81,37 +81,6 @@
                 <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name">
                 </div>
             </div>
-            {{-- <div class="row">
-                <div class="col mb-3">
-                <label for="subcriteria" class="form-label">Enter an operator and a number (e.g., ">100"):</label>
-                <input
-                    type="text"
-                    id="subcriteria"
-                    name="subcriteria"
-                    placeholder="e.g., >100"
-                    pattern="^(>|<|>=|<=|=)\d+(\.\d+)?$"
-                    required
-                    class="form-control"
-                    title="Input must match a valid operator followed by a number, e.g., '>100' or '<=100'"
-                />
-                </div>
-            </div> --}}
-            <div class="row">
-                <div class="col mb-3">
-                <label for="nilaik" class="form-label">Criteria Value</label>
-                <input type="text" id="nilaik" name="nilaik" class="form-control" placeholder="Enter Value">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col mb-3">
-                <label for="role" class="form-label">Nilai Bobot Criteria</label>
-                <select class="form-select" id="role" name="cbnilaib">
-                    <option value="1">Rendah (Nilai = 1)</option>
-                    <option value="2">Rata-Rata (Nilai = 2)</option>
-                    <option value="3">Tinggi (Nilai = 3)</option>
-                </select>
-                </div>
-            </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -201,9 +170,6 @@
                     <th>ID Sub Criteria</th>
                     <th>Nama Criteria</th>
                     <th>Nama Sub Criteria</th>
-                    <th>Nilai Criteria</th>
-                    <th>Bobot Criteria</th>
-                    <th>Operator</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -216,9 +182,6 @@
                             <td>{{ $criteria->code }}</td>
                             <td>{{ $criteria->criteria->name }}</td>
                             <td>{{ $criteria->name }}</td>
-                            <td>{{ $criteria->value }}</td>
-                            <td>{{ $criteria->weight }}</td>
-                            <td>{{ $criteria->operator }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>

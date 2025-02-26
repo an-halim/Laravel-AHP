@@ -236,7 +236,7 @@
   </section><!-- End Cta Section -->
 
   <!-- ======= Portfolio Section ======= -->
-  <section id="portfolio" class="portfolio">
+  <section id="portfolio" class="portfolio" id="alternative">
     <div class="container">
 
       <div class="section-title">
@@ -246,22 +246,37 @@
 
       <div class="row portfolio-container">
         @if($alternatives->count() > 0)
-        @foreach($alternatives as $alternative)
-        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-          <div class="portfolio-img"><img src="{{ url('/data_file/'.$alternative->gambar) }}" class="img-fluid" alt="{{ $alternative->gambar }}"></div>
-          <div class="portfolio-info">
-            <h4>{{ $alternative->nama }} <span>({{ $alternative->model }})</span></h4>
-            <p>Rp. {{ $alternative->harga }}</p>
-            <a href="{{ url('/data_file/'.$alternative->gambar) }}" data-gall="portfolioGallery" class="venobox preview-link" title="App 1"><i class="bx bx-plus"></i></a>
-            <!-- <a href="portfolio-details.html" class="details-link" title="More Details"><i class="bx bx-link"></i></a> -->
-          </div>
-        </div>
-        @endforeach
+            @foreach($alternatives as $alternative)
+                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+
+                    <img src="{{ url('/data_file/'.$alternative->gambar) }}"
+                        class="img-fluid"
+                        style="max-width: 350px; max-height: 250px;"
+                        alt="{{ $alternative->gambar }}"
+                        onerror="this.onerror=null; this.src='https://placehold.co/400x300?text=No+Image';">
+
+                    <div>
+                        <h4>{{ $alternative->nama }} <span>({{ $alternative->model }})</span></h4>
+                        <p>Rp. {{ number_format($alternative->harga, 0, ',', '.') }}</p>
+                        <a href="{{ url('/data_file/'.$alternative->gambar) }}"
+                        data-gall="portfolioGallery"
+                        class="venobox preview-link"
+                        title="{{ $alternative->nama }}">
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+
+            <!-- Pagination Links -->
+            <div class="d-flex justify-content-center mt-4">
+                {{ $alternatives->withQueryString()->links('pagination::bootstrap-4') }}
+            </div>
         @else
-        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <h5>Data tidak ada</h5>
-        </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+                <h5>Data tidak ada</h5>
+            </div>
         @endif
+
       </div>
 
     </div>
@@ -330,3 +345,25 @@
 
 </main><!-- End #main -->
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.hash === '#alternative') {
+            const section = document.getElementById('alternative');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Update pagination links to include the hash
+        const paginationLinks = document.querySelectorAll('.pagination a');
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = new URL(this.href);
+                url.hash = 'alternative';  // Add #alternative to the URL
+                window.location.href = url.toString();
+            });
+        });
+    });
+</script>

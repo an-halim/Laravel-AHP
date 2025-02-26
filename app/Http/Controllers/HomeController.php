@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $alternatives = Alternative::all();
+        $alternatives = Alternative::paginate(6);
 
         return view('home.index', compact('alternatives'));
     }

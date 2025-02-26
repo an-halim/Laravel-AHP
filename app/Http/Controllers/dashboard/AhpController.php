@@ -31,7 +31,7 @@ class AhpController extends Controller
 
     public function alternatives()
     {
-        $alternatives = Alternative::all();
+        $alternatives = Alternative::paginate(6);
         return view('dashboard.ahp-alternatif.ahp-alternatif', compact('alternatives'));
     }
 
@@ -281,8 +281,7 @@ class AhpController extends Controller
             // Ambil data dari request
             $subCriteriaWeights = json_decode($request->input('priorityVectorSubCriteria'), true);
             $criteriaWeights = json_decode($request->input('priorityVectorCriteria'), true);
-
-            $products = Alternative::Categorize()->toArray();
+            $products = Alternative::all();
 
             // Validasi data input
             if (empty($criteriaWeights) || empty($subCriteriaWeights) || empty($products)) {
@@ -290,7 +289,7 @@ class AhpController extends Controller
                 return redirect()->back()->with('error', 'Data tidak lengkap');
             }
 
-            // Validasi konsistensi (CR harus <= 0.1 untuk dianggap konsisten)
+            // Validasi konsistensi
             $isConsistent = $this->validateConsistency($criteriaWeights, $subCriteriaWeights);
             if (!$isConsistent) {
                 DB::rollBack();
@@ -303,21 +302,77 @@ class AhpController extends Controller
             // Buat record hasil untuk user
             $userResult = $this->createUserResult();
 
-            // Hitung dan urutkan skor produk
-            $productScores = $this->calculateProductScores($products, $globalWeights, $userResult->id);
+            // 🔥 PROSES NORMALISASI & PERHITUNGAN SKOR
+            $normalizedData = $this->normalizeAlternatives($products);
+            $productScores = $this->calculateProductScores($normalizedData, $globalWeights, $userResult->id);
 
             // Simpan hasil ke database
             Hasil::insert($productScores);
 
             DB::commit();
-
-            // Return hasil rekomendasi
             return redirect('/ahp/report/' . $userResult->id);
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+    /**
+     * 🔄 Normalisasi data alternatif berdasarkan kriteria
+     */
+    private function normalizeAlternatives($products)
+    {
+        // Cari nilai max dan min untuk setiap kriteria
+        $minHarga = $products->min('harga');
+        $maxDayaTahan = $products->max('garansi');
+        $minWatt = $products->min('watt');
+        $maxKapasitas = $products->max('kapasitas');
+
+        // Normalisasi per produk
+        $normalizedData = $products->map(function ($product) use ($minHarga, $maxDayaTahan, $minWatt, $maxKapasitas) {
+            return [
+                'id' => $product->id,
+                'nama' => $product->nama,
+                'model' => $product->model,
+                'harga' => $minHarga / $product->harga,               // Cost criteria
+                'garansi' => $product->garansi / $maxDayaTahan, // Benefit criteria
+                'watt' => $minWatt / $product->watt,                  // Cost criteria
+                'kapasitas' => $product->kapasitas / $maxKapasitas    // Benefit criteria
+            ];
+        });
+
+        return $normalizedData;
+    }
+
+    /**
+     * 🏆 Hitung skor produk dan urutkan berdasarkan skor tertinggi
+     */
+    private function calculateProductScores($normalizedData, $globalWeights, $userResultId)
+    {
+        $productScores = [];
+
+        foreach ($normalizedData as $product) {
+            // ✅ Perhitungan skor akhir per produk (menggunakan bobot global flatten)
+            $score = ($product['harga'] * $globalWeights['harga']) +
+                    ($product['garansi'] * $globalWeights['garansi']) +
+                    ($product['watt'] * $globalWeights['watt']) +
+                    ($product['kapasitas'] * $globalWeights['kapasitas']);
+
+            $productScores[] = [
+                'user_result_id' => $userResultId,
+                'alternative_id' => $product['id'],
+                'nama' => $product['nama'],
+                'model' => $product['model'],
+                'ahp' => $score
+            ];
+        }
+
+        // 🔄 Urutkan berdasarkan skor tertinggi
+        usort($productScores, fn($a, $b) => $b['ahp'] <=> $a['ahp']);
+        return $productScores;
+    }
+
+
 
     /**
      * Validasi konsistensi matriks perbandingan
@@ -332,24 +387,23 @@ class AhpController extends Controller
         return true;
     }
 
-    /**
-     * Hitung bobot global untuk setiap sub kriteria
+     /**
+     * ✅ Hitung bobot global untuk setiap kriteria (dengan sub kriteria)
      */
     private function calculateGlobalWeights($criteriaWeights, $subCriteriaWeights)
     {
         $globalWeights = [];
         foreach ($subCriteriaWeights as $criteria => $subs) {
-            foreach ($subs as $subName => $subWeight) {
-                // Convert both criteria and subName to lowercase to handle case insensitivity
-                $criteriaLower = strtolower($criteria);
-                $subNameLower = strtolower($subName);
+            $criteriaLower = strtolower($criteria);
+            $globalWeights[$criteriaLower] = 0;
 
-                // Bobot global = bobot kriteria * bobot sub-kriteria
-                $globalWeights[$criteriaLower][$subNameLower] = $criteriaWeights[$criteria] * $subWeight;
+            foreach ($subs as $subName => $subWeight) {
+                $globalWeights[$criteriaLower] += $criteriaWeights[$criteria] * $subWeight;
             }
         }
         return $globalWeights;
     }
+
 
     /**
      * Buat record hasil untuk user
@@ -359,51 +413,6 @@ class AhpController extends Controller
         return UserResult::create([
             'user_id' => Auth::user()->id,
         ]);
-    }
-
-    /**
-     * Hitung dan urutkan skor produk
-     */
-    private function calculateProductScores($products, $globalWeights, $userResultId)
-    {
-        $productScores = [];
-        foreach ($products as $product) {
-            $score = 0;
-            // Iterate through product attributes (harga, kapasitas, etc.)
-            foreach ($product as $attribute => $value) {
-                if (!is_array($value)) { // handle if value is not an array
-                    // Convert attribute and value to lowercase to handle case insensitivity
-                    $attributeLower = strtolower($attribute);
-                    $valueLower = strtolower($value);
-
-                    // Check if the attribute matches the sub-criteria
-                    if (isset($globalWeights[$attributeLower][$valueLower])) {
-                        // Add global weight if exists
-                        $score += $globalWeights[$attributeLower][$valueLower];
-                    }
-                }
-            }
-
-            // Add all product fields along with the score
-            $productScores[] = [
-                'ahp' => $score,
-                'user_result_id' => $userResultId,
-                'model' => $product['model'],
-                'nama' => $product['nama'],
-                'harga' => $product['harga'],
-                'watt' => $product['watt'],
-                'kapasitas' => $product['kapasitas'],
-                'garansi' => $product['garansi'],
-                'gambar' => $product['gambar'] ?? "https://via",
-            ];
-        }
-
-        // Urutkan berdasarkan skor (dari tertinggi ke terendah)
-        usort($productScores, function ($a, $b) {
-            return $b['ahp'] <=> $a['ahp'];
-        });
-
-        return $productScores;
     }
 
     /**
