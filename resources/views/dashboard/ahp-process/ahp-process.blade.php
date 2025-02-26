@@ -173,25 +173,51 @@
             @endforeach
          </tbody>
       </table>
+
       <h6 class="card-header d-flex justify-content-between align-items-center">
-         Priority Vector
+        Mencari konsistensi Matrix
+     </h6>
+     <table class="table table-bordered">
+        <thead>
+           <tr>
+              <th></th>
+              @foreach (array_keys($result['weightedSumMatrix']) as $col)
+              <th>{{ $col }}</th>
+              @endforeach
+              <th>CM</th>
+           </tr>
+        </thead>
+        <tbody>
+           @foreach ($result['weightedSumMatrix'] as $row => $values)
+           <tr>
+              <td>{{ $row}}</td>
+              @foreach ($values as $value)
+              <td>{{ number_format($value, 4) }}</td>
+              @endforeach
+               <td>{{ number_format($result['weightedSumVector'][$row], 4) }}</td>
+           </tr>
+           @endforeach
+           {{-- sum on each column --}}
+        </tbody>
+     </table>
+
+     <h6 class="card-header d-flex justify-content-between align-items-center">
+        Consistency Check
       </h6>
       <ul>
-         @foreach ($result['priorityVector'] as $key => $value)
-         <li>{{ $key }}: {{ number_format($value, 4) }}</li>
-         @endforeach
          <li>Lambda Max: {{ $result['lambdaMax'] }}</li>
          <li>CI: {{ $result['ci'] }}</li>
          <li>CR: {{ $result['cr'] }}</li>
+         {{-- status consitensi --}}
+        @if ($result['cr'] < 0.1)
+        <li class="badge bg-success">Consistent</li>
+        @else
+        <li class="badge bg-danger">Inconsistent</li>
+        @endif
       </ul>
       @endforeach
    </div>
    <div class="card my-4">
-      {{-- <h5 class="card-footer d-flex flex-column flex-md-row justify-content-between align-items-center">
-         <span>Lambda Max: <strong>{{ number_format($criteriaResult->lambdaMax, 4) }}</strong></span>
-         <span>Consistency Index (CI): <strong>{{ number_format($criteriaResult->ci, 4) }}</strong></span>
-         <span>Consistency Ratio (CR): <strong>{{ number_format($criteriaResult->cr, 4) }}</strong></span>
-      </h5> --}}
       <div class="row justify-content-between m-4">
          <div class="col-md-6 d-grid">
             <button type="submit" class="btn btn-primary">Hitung</button>

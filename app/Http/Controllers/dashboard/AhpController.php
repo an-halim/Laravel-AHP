@@ -470,11 +470,34 @@ class AhpController extends Controller
             // Pastikan kunci unik
             $criteriaKeys = array_unique($criteriaKeys);
 
-            // Inisialisasi matriks
+            // // Inisialisasi matriks
+            // $matrix = [];
+            // foreach ($criteriaKeys as $row) {
+            //     foreach ($criteriaKeys as $col) {
+            //         $matrix[$row][$col] = $comparisons[$row][$col] ?? 1;
+            //     }
+            // }
+
+            // Inisialisasi matriks kosong dan pastikan simetri (Aji = 1/Aij)
             $matrix = [];
             foreach ($criteriaKeys as $row) {
                 foreach ($criteriaKeys as $col) {
-                    $matrix[$row][$col] = $comparisons[$row][$col] ?? 1;
+                    if ($row === $col) {
+                        // Diagonal selalu 1 (perbandingan kriteria dengan dirinya sendiri)
+                        $matrix[$row][$col] = 1;
+                    } elseif (isset($comparisons[$row][$col])) {
+                        // Jika Aij diinput, isi dan otomatis hitung Aji
+                        $matrix[$row][$col] = $comparisons[$row][$col];
+                        $matrix[$col][$row] = 1 / $comparisons[$row][$col];
+                    } elseif (isset($comparisons[$col][$row])) {
+                        // Jika Aji diinput, isi dan otomatis hitung Aij
+                        $matrix[$row][$col] = 1 / $comparisons[$col][$row];
+                        $matrix[$col][$row] = $comparisons[$col][$row];
+                    } else {
+                        // Default jika tidak ada input (asumsikan sama penting)
+                        $matrix[$row][$col] = 1;
+                        $matrix[$col][$row] = 1;
+                    }
                 }
             }
 
@@ -500,19 +523,37 @@ class AhpController extends Controller
                 $priorityVector[$row] = array_sum($values) / count($values);
             }
 
-            // Hitung weighted sum vector (menggunakan matriks asli)
-            $weightedSumVector = [];
+
+
+            // Hitung Weighted Sum Vector dalam bentuk matriks
+            $weightedSumMatrix = [];
             foreach ($matrix as $row => $values) {
-                $weightedSumVector[$row] = 0;
                 foreach ($values as $col => $value) {
-                    $weightedSumVector[$row] += $value * $priorityVector[$col];
+                    // Kalikan nilai matriks asli dengan bobot prioritas
+                    $weightedSumMatrix[$row][$col] = $value * $priorityVector[$col];
                 }
             }
+
+            // // Hitung jumlah per baris (Weighted Sum Vector)
+            $weightedSumVector = [];
+            foreach ($weightedSumMatrix as $row => $values) {
+                $weightedSumVector[$row] = array_sum($values);
+            }
+
+
+            // // Hitung weighted sum vector (menggunakan matriks asli)
+            // $weightedSumVector = [];
+            // foreach ($matrix as $row => $values) {
+            //     $weightedSumVector[$row] = 0;
+            //     foreach ($values as $col => $value) {
+            //         $weightedSumVector[$row] += $value * $priorityVector[$col];
+            //     }
+            // }
 
             // Hitung lambda max dengan metode standar
             $lambdaMax = 0;
             foreach ($criteriaKeys as $row) {
-                $lambdaMax += $weightedSumVector[$row] / $priorityVector[$row];
+                $lambdaMax += $weightedSumVector[$row];
             }
             $lambdaMax /= count($criteriaKeys);
 
@@ -528,6 +569,7 @@ class AhpController extends Controller
                 'normalizedMatrix' => $normalizedMatrix,
                 'priorityVector' => $priorityVector,
                 'weightedSumVector' => $weightedSumVector,
+                'weightedSumMatrix' => $weightedSumMatrix,
                 'lambdaMax' => $lambdaMax,
                 'ci' => $ci,
                 'cr' => $cr,
