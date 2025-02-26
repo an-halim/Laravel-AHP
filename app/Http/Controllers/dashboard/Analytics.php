@@ -23,6 +23,7 @@ class Analytics extends Controller
         $subCriteriaCount = SubCriteria::all()->count();
         $resultPercentage = Hasil::getPercentageIncrease();
         $topRiceCooker = Hasil::getTop5ByAhpScore();
+        $topRiceCooker = Alternative::whereIn('model', $topRiceCooker)->get();
 
         return view('dashboard.dashboard.dashboards-analytics', [
             'auth' => $auth,

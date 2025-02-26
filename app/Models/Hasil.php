@@ -49,6 +49,7 @@ class Hasil extends Model
     {
         return self::orderByDesc('ahp') // Order by ahp score in descending order
             ->limit(5) // Limit to top 5 results
-            ->get();
+            ->get('model')
+            ->toArray();
     }
 }
